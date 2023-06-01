@@ -1,0 +1,30 @@
+TODO protocol
+
+definitions:
+    -check for library: "diypiv"
+    -respond of check: "piv<x>"  -> further communication should be only for interface app
+    -request build info: "BI"
+    -tell device ready: "OK"
+
+    -modules are separated by sign at front and end of information
+        example1: *module**module*
+        example2: *module#*module#
+    -module information per module should be separated by other char
+        example: id;param1;param2
+    -parameters could also not be separated by char and rather be defined by byte width, width of each parameter would be defined by module itself (needs more code)
+        example: id(1b)param1(4b)param2(2b)
+
+build sequence:
+    -uses rules of module information transmission
+    -build sequence should deliver:
+        -starting keyword
+        -grid width aka amount of columns
+        -have ending keyword
+
+    -each module needs following information: no module specific parameters
+        -module type
+        -width
+        -height
+        -title
+
+    -the order of modules in build sequence defines position and id for later use, both sides will only know these IDs
