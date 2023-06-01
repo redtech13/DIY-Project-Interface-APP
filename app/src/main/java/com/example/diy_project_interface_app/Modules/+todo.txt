@@ -1,0 +1,30 @@
+TODO Modules
+//Positions in grid and anything visual concerning the layout will not be changed after initial creation
+-Create Base Class
+    -Module information: id of module type, name, width, height, related view
+    -Instancing information:
+        -assigned x and y position
+        -creation id for accessing (possibly position in array)
+        -title
+        -description (better not used to force descriptive titles and save uC memory
+    -State variable (enabled) -> is disabled before getting first information: controls enable state of module in gui
+    -Instance of view to be controlled
+    -Methods:
+        -Update Information -> input: received string from comm (string is clean of comm protocol aka only parameters), output: updates view
+        -Get Information -> returns string of command to be added to send on comm, will be requested regularly, returns "" if no changes, decides if cmd get cleared
+
+
+-Array to convert number to module(type)
+
+-List of instantiated modules will be in the interface layout to keep graphics in main thread
+
+-Create first modules
+    -Title Module
+        -big text
+    -Simple Text/Number Display  (for multiple texts, should we try making groups or just multiple modules with different amount of text fields?)
+        -set mode text or number (number can have unit)
+        -set output only (if false can be changed and gets updated, number may have in/decrease buttons)
+    -Slider module
+        -orientation
+        -value min/max
+    -follow with more

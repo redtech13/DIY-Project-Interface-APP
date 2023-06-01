@@ -1,0 +1,23 @@
+Todo Main
+
+-complete communication to-do
+-complete modules to-do
+
+-create basic main layout
+    -button for devices connection list or on cold start directly go to device connection screen and settings
+    -after successful connection and part of handshake do build of gui
+        -create grid system in which to place modules (don't forget scrolling)
+        -figure out position etc
+    -dismantle build string to chop into modules and build parameters
+    -overall method to create module and place it in view
+    -method to get received command for update information and chop it up, clean it and feed it to the related module
+    -handle updates from modules to the device, by regularly checking
+
+-settings
+    -update frequency (default: 50ms)
+
+
+-additional things
+    -uC can set:
+        -grid width aka columns
+        -size of the modules (should be in recommended values, but can be anything, create views to be kind of dynamic, but doesn't need to support everything)

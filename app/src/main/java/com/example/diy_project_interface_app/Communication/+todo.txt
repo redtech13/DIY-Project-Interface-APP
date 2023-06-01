@@ -1,0 +1,19 @@
+TODO Communications
+-Create Base Class
+    -Instance of connected Device?
+    -Find -> initiate scan to return list of available devices that comply with given conditions (TAG in name)
+    -Connect -> initiate connecting to device of scan list (may include password)
+    -Disconnect
+    -Send -> send byte array (String) to connected device
+    -Receive Callback -> received byte array from device to be executed by external code
+
+-Create BT class as base class but bluetooth specific
+
+-Start of protocol implementation to be done after connecting // should we do this as extra class? since we would reuse it for others comm types
+                                                                  we need to differentiate for update information and build information, so maybe in main or modules?
+    -Handshake as simple as: (in case one of these steps get no response, fail to connect "library not installed on device"
+        -Phone to uC: code for "hey im the app that does the interface do you have the needed library"
+        -uC to Phone: code for "yes i do, it's on version blabla"
+        -Phone to uC: code for "nice to meet you, would you mind sending me the information for the interface"
+        -uC to Phone: sends information with some sort of build done message at the end
+        -Phone to uC: code for "ok im ready you can start updating the information now, don't forget to do it once for all modules at the beginning"
