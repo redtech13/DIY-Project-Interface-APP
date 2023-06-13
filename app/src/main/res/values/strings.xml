@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">DIY-Project-Interface-APP</string>
+    
+    <!--  Protocol Parameters and Format and Definitions  -->
+    <string name="PROT_cmd_versionRequest">DiAv</string>
+    <string name="PROT_cmd_modeActive">DiAi</string>
+    <string name="PROT_cmd_buildRequest">BI</string>
+    <string name="PROT_cmd_buildStart">_-_</string>
+    <string name="PROT_cmd_buildEnd">___</string>
+    <string name="PROT_mod_prefix">´</string>
+    <string name="PROT_mod_suffix">`</string>
+    <string name="PROT_mod_parameter">;</string>
+
 </resources>
