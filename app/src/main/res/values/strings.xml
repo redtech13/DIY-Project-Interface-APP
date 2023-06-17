@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">DIY-Project-Interface-APP</string>
+
+    <!-- Texts -->
+    <string name="BTN_Devices">Devices</string>
+    <string name="BTN_Settings">Settings</string>
     
     <!--  Protocol Parameters and Format and Definitions  -->
     <string name="PROT_cmd_versionRequest">DiAv</string>
@@ -10,5 +14,9 @@
     <string name="PROT_mod_prefix">´</string>
     <string name="PROT_mod_suffix">`</string>
     <string name="PROT_mod_parameter">;</string>
+
+    <!-- Errors -->
+    <string name="ERR_buildInfo_incomplete">Incomplete Build Info</string>
+
 
 </resources>

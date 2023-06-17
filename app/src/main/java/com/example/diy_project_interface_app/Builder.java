@@ -53,9 +53,10 @@ public class Builder {
                     space++;
                 }
                 if(space >= _width)  //if one fits check further
-                    if(checkNextLines(new Point(i,count),_width,_height)) {
-                        out = new Point(i, count);
+                    if(checkNextLines(new Point(i-_width+1,count),_width,_height)) {
+                        out = new Point(i-_width+1, count);
                         cont = false;
+                        break;
                     }
             }
             count++;
@@ -76,7 +77,7 @@ public class Builder {
             if(_pos.y + i >= used.size()) //if reached end of rows, will fit if before was no issue
                 break;
             for(int k = 0;k<_width;k++){ //goes through each row from give positions for the needed width
-                if(!used.get(_pos.y+i)[_pos.x+k]){
+                if(used.get(_pos.y+i)[_pos.x+k]){
                     out = false;
                     break;
                 }
@@ -92,7 +93,8 @@ public class Builder {
      * @param _height height
      */
     public void addRectangle(Point _pos, int _width, int _height){
-        for(int i = 0;i<_pos.y+_height-used.size();i++){ //Add needed rows
+        int rep = _pos.y+_height-used.size();
+        for(int i = 0;i<rep;i++){ //Add needed rows
             used.add(new boolean[columns]);
         }
 

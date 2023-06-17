@@ -55,7 +55,7 @@ public class CommunicationProtocol{
      * @param _buildinfo The Build info send by the uC
      * @return A List of modules, the first should contain general layout information
      */
-    public ArrayList<String> buildInfoToModuleStrings(String _buildinfo){
+    public ArrayList<String> buildInfoToModuleStrings(String _buildinfo) throws IllegalArgumentException{
         ArrayList<String> modules = new ArrayList<String>();
         //if buildinfo contains start and end flags, work on it
         if(_buildinfo.startsWith(ctx.getString(R.string.PROT_cmd_buildStart)) && _buildinfo.endsWith(ctx.getString(R.string.PROT_cmd_buildEnd))){
@@ -74,6 +74,8 @@ public class CommunicationProtocol{
             }
 
         }
+        if(modules.size()==0)
+            throw new IllegalArgumentException(ctx.getString(R.string.ERR_buildInfo_incomplete));
         return modules;
     }
 
@@ -82,11 +84,11 @@ public class CommunicationProtocol{
      * @param _buildinfo The build info string send by uC
      * @return List of Modules Infos of type list
      */
-    public ArrayList<ArrayList<String>> createModuleInfos(String _buildinfo){
+    public ArrayList<ArrayList<String>> createModuleInfos(String _buildinfo) throws IllegalArgumentException{
         ArrayList<ArrayList<String>> modules = new ArrayList<ArrayList<String>>();
         ArrayList<String> moduleinfos = buildInfoToModuleStrings(_buildinfo);
         for(int i = 0; i< moduleinfos.size() ;i++){
-            modules.add((ArrayList<String>) Arrays.asList(moduleinfos.get(i).split(ctx.getString(R.string.PROT_mod_parameter))));
+            modules.add( new ArrayList<String> (Arrays.asList(moduleinfos.get(i).split(ctx.getString(R.string.PROT_mod_parameter)))));
         }
         return modules;
     }
@@ -96,8 +98,8 @@ public class CommunicationProtocol{
      * @param _buildInfo Build Info send by uC
      * @return Amount of columns requested
      */
-    public int getColumns(String _buildInfo){
-        return Integer.getInteger(buildInfoToModuleStrings(_buildInfo).get(0).split(ctx.getString(R.string.PROT_mod_parameter))[0]);
+    public int getColumns(String _buildInfo) throws IllegalArgumentException{
+        return Integer.parseInt(buildInfoToModuleStrings(_buildInfo).get(0).split(ctx.getString(R.string.PROT_mod_parameter))[0]);
     }
 
 
