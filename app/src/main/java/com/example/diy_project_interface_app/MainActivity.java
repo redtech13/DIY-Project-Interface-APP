@@ -178,4 +178,9 @@ public class MainActivity extends AppCompatActivity {
         //if(device.isConnected())
         //  device.send(cmd);
     }
+
+    //TODO: keep communication active
+    //need callback function for receiving with flags of what is active (enum)
+    //make build process async and build on callback
+
 }
