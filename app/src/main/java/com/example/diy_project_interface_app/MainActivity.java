@@ -45,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
     FrameLayout grid;
     CommunicationProtocol commprot;
     //ArrayList<Module> modules;
+    boolean isBuild = false;
+    //Communication device;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,8 +102,10 @@ public class MainActivity extends AppCompatActivity {
 
             modules.remove(0);
             for(ArrayList<String> module: modules){
-                buildModule(module);
+                buildModule(module); //TODO: change to return type module
+                //modules.add(buildModule(module));
             }
+            isBuild = true;
         }catch (IllegalArgumentException e){
             toastIt(e.getMessage());
         }
@@ -115,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
         int height = Integer.parseInt(aModuleInfo[2]);
         Point pos = builder.getNextPosition(width,height);
         //Module module = Modules.getModule(type, pos.x,pos.y,width,height etc...)
+
         builder.addRectangle(pos,width,height);
         //int viewid = module.getView();
         int viewId = R.layout.module_example; //test module
@@ -134,6 +140,8 @@ public class MainActivity extends AppCompatActivity {
         lparams.setMargins(builder.getWidthPx(pos.x),builder.getHeightPx(pos.y),0,0);
         constraint.setLayoutParams(lparams);
 
+        //return module;
+
     }
 
     private String buildRequest(){
@@ -145,11 +153,29 @@ public class MainActivity extends AppCompatActivity {
     private void buildReset(){
         //Clear Grid
         grid.removeAllViews();
+        isBuild = false;
     }
 
     private void toastIt(String _message){
         Toast toast = new Toast(this);
         toast.setText(_message);
         toast.show();
+    }
+
+    private void updateModules(String _updateInfo){
+        if(isBuild){
+            for(ArrayList<String> moduleinfo:commprot.createModuleInfos(_updateInfo)){
+                //modules[moduleinfo.remove(0)].update(moduleinfo);
+            }
+        }
+    }
+
+    private void getModuleUpdates(){
+        StringBuilder cmd = new StringBuilder("");
+        /*for(Module module: modules){
+            cmd.append(module.getCommand());
+        }*/
+        //if(device.isConnected())
+        //  device.send(cmd);
     }
 }
