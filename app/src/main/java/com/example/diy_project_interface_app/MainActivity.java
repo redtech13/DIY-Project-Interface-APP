@@ -75,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
         int itemId = item.getItemId();
         if (itemId == R.id.action_devices) {
             //TODO: start device activity and return
-            //Intent intent = new Intent(MainActivity.this, DeviceActivity.class);
-            //activityLauncher.launch(intent);
+            Intent intent = new Intent(MainActivity.this, BluetoothDeviceActivity.class);
+            activityLauncher.launch(intent);
             return true;
         } else if (itemId == R.id.action_settings) {
             //TODO: start settings activity
