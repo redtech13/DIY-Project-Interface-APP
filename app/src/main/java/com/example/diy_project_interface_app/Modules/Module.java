@@ -10,17 +10,17 @@ import android.view.View;
  */
 
 public class Module {
-    private int moduleTypeId;
-    private String name;
-    private int width, height;
-    private int xPosition, yPosition;
-    private View relatedView;
-    private int creationId;
-    private String title;
-    private boolean isEnabled;
-    private String description;
-    private boolean informationChanged;
-    private String information;
+    protected int moduleTypeId;
+    protected String name;
+    protected int width, height;
+    protected int xPosition, yPosition;
+    protected View relatedView;
+    protected int creationId;
+    protected String title;
+    protected boolean isEnabled;
+    protected String description;
+    protected boolean informationChanged;
+    protected String information;
 
     public Module(int moduleTypeId, String name, int width, int height, View relatedView) {
         this.moduleTypeId = moduleTypeId;
