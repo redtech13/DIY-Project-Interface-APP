@@ -2,6 +2,8 @@ package com.example.diy_project_interface_app.Modules;
 
 import android.view.View;
 
+import java.util.ArrayList;
+
 /***
  * Author: Jonas Sbiegay
  * Studiengang: SMSB
@@ -34,8 +36,10 @@ public class Module {
         this.information = "";
     }
 
-    public void updateInformation(String receivedString) {
-
+    public void updateInformation(ArrayList<String> receivedStrings) {
+        for (String str : receivedStrings) {
+            //Code dann hier
+        }
     }
 
     public String getInformation() {

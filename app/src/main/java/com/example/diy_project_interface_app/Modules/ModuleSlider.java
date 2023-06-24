@@ -6,16 +6,18 @@ import android.widget.SeekBar;
 public class ModuleSlider extends Module {
 
     protected float sliderValue;
+    protected SeekBar slider;
+
 
     public ModuleSlider(int moduleTypeId, String name, int width, int height, View relatedView, float sliderValue) {
         super(moduleTypeId, name, width, height, relatedView);
         this.sliderValue = sliderValue;
-
+        slider = (SeekBar) relatedView;
         initSlider();
     }
 
     private void initSlider(){
-        SeekBar slider = (SeekBar) relatedView;
+
 
         //auf der Seekbar will ich unseren Slider aufbauen morgen
         slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
