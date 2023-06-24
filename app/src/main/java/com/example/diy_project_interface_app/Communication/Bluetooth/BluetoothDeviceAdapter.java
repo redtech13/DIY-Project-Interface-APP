@@ -1,4 +1,4 @@
-package com.example.diy_project_interface_app;
+package com.example.diy_project_interface_app.Communication.Bluetooth;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
@@ -6,15 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.diy_project_interface_app.R;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class BluetoothDeviceAdapter extends RecyclerView.Adapter<BluetoothViewHolder> {
 

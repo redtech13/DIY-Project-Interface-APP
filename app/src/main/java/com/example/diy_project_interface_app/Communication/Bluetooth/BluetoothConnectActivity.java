@@ -1,8 +1,7 @@
-package com.example.diy_project_interface_app;
+package com.example.diy_project_interface_app.Communication.Bluetooth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -13,6 +12,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.example.diy_project_interface_app.R;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
