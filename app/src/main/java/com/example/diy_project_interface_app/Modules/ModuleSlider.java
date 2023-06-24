@@ -2,6 +2,8 @@ package com.example.diy_project_interface_app.Modules;
 
 import android.view.View;
 
+//TODO: nicht fertig?
+/*
 public class ModuleSlider extends Module {
 
     protected float sliderValue;
@@ -35,4 +37,4 @@ public class ModuleSlider extends Module {
     });
 
 
-}
+}*/
