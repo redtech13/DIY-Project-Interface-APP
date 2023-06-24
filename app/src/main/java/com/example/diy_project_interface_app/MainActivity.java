@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.diy_project_interface_app.Communication.Bluetooth.BluetoothConnectionService;
 import com.example.diy_project_interface_app.Communication.Bluetooth.BluetoothDeviceActivity;
 import com.example.diy_project_interface_app.Inner.CommunicationProtocol;
+import com.example.diy_project_interface_app.Modules.Module;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
             switch (result.getResultCode()){
                 case 1: //Devices
                     //TODO: extract bundle and active device class
+                    //get device mac address and create communication class aka bluetooth
                     break;
             }
         }
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     Builder builder;
     FrameLayout grid;
     CommunicationProtocol commprot;
-    //ArrayList<Module> modules;
+    ArrayList<Module> modules;
     boolean isBuild = false;
     //Communication device;
 
@@ -61,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         grid = (FrameLayout) findViewById(R.id.grid);
         commprot = new CommunicationProtocol(this);
-        //modules = new ArrayList<Module>();
+        modules = new ArrayList<Module>();
 
     }
 
@@ -120,13 +122,13 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             builder = new Builder(grid.getWidth(),grid.getHeight(), commprot.getColumns(buildInfo),buildInfo); //Instantiate Builder
-            ArrayList<ArrayList<String>> modules = commprot.createModuleInfos(builder.buildInfo); //Get Module Infos (a list of a list of module parameters
+            ArrayList<ArrayList<String>> moduleinfos = commprot.createModuleInfos(builder.buildInfo); //Get Module Infos (a list of a list of module parameters
             //At this point errors might have been avoided, so we can do new build confirmed stuff here
 
-            modules.remove(0);
-            for(ArrayList<String> module: modules){
+            moduleinfos.remove(0);
+            for(ArrayList<String> module: moduleinfos){
                 buildModule(module); //TODO: change to return type module
-                //modules.add(buildModule(module));
+                modules.add(buildModule(module));
             }
             isBuild = true;
         }catch (IllegalArgumentException e){
@@ -135,14 +137,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void buildModule(ArrayList<String> moduleInfo){
+    private Module buildModule(ArrayList<String> moduleInfo){
         String[] aModuleInfo = new String[moduleInfo.size()];
         moduleInfo.toArray(aModuleInfo); //convert to array, to give to module
         int type = Integer.parseInt(aModuleInfo[0]);
         int width = Integer.parseInt(aModuleInfo[1]);
         int height = Integer.parseInt(aModuleInfo[2]);
         Point pos = builder.getNextPosition(width,height);
-        //Module module = Modules.getModule(type, pos.x,pos.y,width,height etc...)
+        Module module = new Module(0,"",0,0,new View(this)); //Todo: change to  //Modules.getModule(type, pos.x,pos.y,width,height etc...)
 
         builder.addRectangle(pos,width,height);
         //int viewid = module.getView();
@@ -163,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         lparams.setMargins(builder.getWidthPx(pos.x),builder.getHeightPx(pos.y),0,0);
         constraint.setLayoutParams(lparams);
 
-        //return module;
+        return module;
 
     }
 
@@ -188,16 +190,16 @@ public class MainActivity extends AppCompatActivity {
     private void updateModules(String _updateInfo){
         if(isBuild){
             for(ArrayList<String> moduleinfo:commprot.createModuleInfos(_updateInfo)){
-                //modules[moduleinfo.remove(0)].update(moduleinfo);
+                //modules.get(Integer.parseInt(moduleinfo.remove(0))).updateInformation(moduleinfo);  //TODO: need updateInformation to take in ArrayList<String> instead of String
             }
         }
     }
 
     private void getModuleUpdates(){
         StringBuilder cmd = new StringBuilder("");
-        /*for(Module module: modules){
-            cmd.append(module.getCommand());
-        }*/
+        for(Module module: modules){
+            cmd.append(module.getInformation());
+        }
         //if(device.isConnected())
         //  device.send(cmd);
     }
