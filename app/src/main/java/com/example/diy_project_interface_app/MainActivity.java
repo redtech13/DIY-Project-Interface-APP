@@ -9,8 +9,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +26,7 @@ import com.example.diy_project_interface_app.Communication.Bluetooth.BluetoothDe
 import com.example.diy_project_interface_app.Inner.CommunicationProtocol;
 import com.example.diy_project_interface_app.Modules.Module;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,9 +38,13 @@ public class MainActivity extends AppCompatActivity {
         public void onActivityResult(ActivityResult result) {
             Intent intent = result.getData();
             switch (result.getResultCode()){
-                case 1: //Devices
+                case 1: //Device connected
                     //TODO: extract bundle and active device class
                     //get device mac address and create communication class aka bluetooth
+                    //or pass Communication Class Instance (better)
+                    break;
+                case 2: //Device not found / not connected
+                    //try connecting to old device
                     break;
             }
         }
@@ -48,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Module> modules;
     boolean isBuild = false;
     //Communication device;
-
+    SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +64,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setSupportActionBar(findViewById(R.id.actionbar));
 
+        preferences = getSharedPreferences(getString(R.string.pref_shared_id),MODE_PRIVATE);
+
         grid = (FrameLayout) findViewById(R.id.grid);
         commprot = new CommunicationProtocol(this);
         modules = new ArrayList<Module>();
+
+        /*if(!device.isConnected){
+            openDevices();
+        }*/
 
     }
 
@@ -75,15 +89,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.action_devices) {
-            //TODO: start device activity and return
-            Intent intent = new Intent(MainActivity.this, BluetoothDeviceActivity.class);
-            activityLauncher.launch(intent);
+            openDevices();
             return true;
         } else if (itemId == R.id.action_settings) {
-            //TODO: start settings activity
-            //Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-            //activityLauncher.launch(intent);
-            buildLayout();
+            openPreferences();
+            return true;
+        } else if(itemId == R.id.action_test){
+            buildLayout();  //for testing only
             return true;
         } else {
             return super.onOptionsItemSelected(item);
@@ -103,10 +115,12 @@ public class MainActivity extends AppCompatActivity {
 
             moduleinfos.remove(0);
             for(ArrayList<String> module: moduleinfos){
-                buildModule(module); //TODO: change to return type module
+                //buildModule(module); //TODO: change to return type module
                 modules.add(buildModule(module));
             }
             isBuild = true;
+            ModuleUpdateGetter updateGetter = new ModuleUpdateGetter();
+            updateGetter.onPostExecute(preferences.getInt(getString(R.string.pref_id_upInt),getResources().getInteger(R.integer.pref_upInt_def)));;
         }catch (IllegalArgumentException e){
             toastIt(e.getMessage());
         }
@@ -171,6 +185,31 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private class ModuleUpdateGetter extends AsyncTask<Integer, Void, String>{
+        int interval = 50;
+
+        protected void onPostExecute(int i) {
+            interval = i;
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    long mark = System.currentTimeMillis();
+                    //System.out.println(new Timestamp((int)System.currentTimeMillis()).toString());
+                    getModuleUpdates();
+                    handler.postDelayed(this, interval - System.currentTimeMillis() + mark);
+
+                }
+            },100);
+        }
+
+
+        @Override
+        protected String doInBackground(Integer... integers) {
+            interval = integers[0];
+            return null;
+        }
+    }
     private void getModuleUpdates(){
         StringBuilder cmd = new StringBuilder("");
         for(Module module: modules){
@@ -180,8 +219,19 @@ public class MainActivity extends AppCompatActivity {
         //  device.send(cmd);
     }
 
+    private void openPreferences(){
+        Intent intent = new Intent(MainActivity.this, PreferenceActivity.class);
+        activityLauncher.launch(intent);
+    }
+
+    private void openDevices(){
+        Intent intent = new Intent(MainActivity.this, BluetoothDeviceActivity.class);
+        activityLauncher.launch(intent);
+    }
+
     //TODO: keep communication active
     //need callback function for receiving with flags of what is active (enum)
     //make build process async and build on callback
+
 
 }

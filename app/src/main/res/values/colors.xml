@@ -4,4 +4,9 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="module_background">#C85D5D</color>
+
+    <!-- Preferences -->
+    <color name="pref_row_border">#000000</color>
+    <color name="pref_row_background">#FFFFFF</color>
+    <color name="pref_row_border_error">#FF0000</color>
 </resources>
