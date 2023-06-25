@@ -8,9 +8,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,10 +21,13 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.example.diy_project_interface_app.Communication.Bluetooth.BluetoothConnectionService;
 import com.example.diy_project_interface_app.Communication.Bluetooth.BluetoothDeviceActivity;
 import com.example.diy_project_interface_app.Inner.CommunicationProtocol;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
     /**
@@ -67,6 +72,25 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.actionbar,menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    /**
+     * Establish connection with Bluetooth device
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = getIntent();
+        BluetoothDevice device = intent.getParcelableExtra("bt_device");
+        BluetoothConnectionService bt_connection = new BluetoothConnectionService(MainActivity.this);
+        if(device != null){
+            bt_connection.startClient(device);
+        }
+        //TODO use bt_connection to send and receive
+        //send
+        //bt_connection.write("123".getBytes(StandardCharsets.UTF_8));
+        //receive
+        //byte_array = bt_connection.getmInput();
     }
 
     @Override
