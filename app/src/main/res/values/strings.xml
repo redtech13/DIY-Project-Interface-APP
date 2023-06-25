@@ -17,6 +17,18 @@
 
     <!-- Errors -->
     <string name="ERR_buildInfo_incomplete">Incomplete Build Info</string>
+    <string name="ERR_pref_wrongArgument">Wrong Argument(s) / Can\'t save</string>
 
+    <!-- Preferences -->
+    <string name="pref_title">Preferences</string>
+    <string name="pref_shared_id">DIApref</string>
+
+    <string name="pref_upInt">Update Interval</string>
+    <string name="pref_upInt_unit">ms</string>
+
+    <string name="pref_id_upInt">updInterval</string>
+
+    <string name="pref_btn_save">Save</string>
+    <string name="pref_btn_cancel">Cancel</string>
 
 </resources>
