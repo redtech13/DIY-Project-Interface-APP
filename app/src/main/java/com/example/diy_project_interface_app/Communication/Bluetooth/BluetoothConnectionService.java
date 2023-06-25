@@ -1,48 +1,35 @@
 package com.example.diy_project_interface_app.Communication.Bluetooth;
 
-import android.app.ProgressDialog;
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
-import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
 
-import androidx.annotation.NonNull;
-
-import com.example.diy_project_interface_app.MainActivity;
+import com.example.diy_project_interface_app.R;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.util.UUID;
 
 /**
- * Created by User on 12/21/2016.
+ * Manages start and upkeep of a Connection with a device
  */
-
 public class BluetoothConnectionService {
     private static final String TAG = "BluetoothConnectionServ";
 
     private static final String appName = "MYAPP";
-
-    static final String CONNECTED_THREAD = "bt_thread";
 
     private static final UUID MY_UUID_INSECURE =
             UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
 
     private BluetoothAdapter mBluetoothAdapter;
     Context mContext;
-
-    public byte[] getmInput() {
-        return mInput;
-    }
 
     private byte[] mInput;
 
@@ -51,7 +38,8 @@ public class BluetoothConnectionService {
     private ConnectThread mConnectThread;
     private BluetoothDevice mmDevice;
     private UUID deviceUUID;
-    ProgressDialog mProgressDialog;
+
+    Dialog mDialog;
 
     private ConnectedThread mConnectedThread;
 
@@ -59,6 +47,10 @@ public class BluetoothConnectionService {
         mContext = context;
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         start();
+    }
+
+    public byte[] getmInput() {
+        return mInput;
     }
 
 
@@ -210,7 +202,6 @@ public class BluetoothConnectionService {
     }
 
     /**
-
      AcceptThread starts and sits waiting for a connection.
      Then ConnectThread starts and attempts to make a connection with the other devices AcceptThread.
      **/
@@ -218,9 +209,11 @@ public class BluetoothConnectionService {
     public void startClient(BluetoothDevice device){
         Log.d(TAG, "startClient: Started.");
 
-        //initprogress dialog
-        mProgressDialog = ProgressDialog.show(mContext,"Connecting Bluetooth"
-                ,"Please Wait...",true);
+        //init dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setView(R.layout.progress);
+        mDialog = builder.create();
+        mDialog.show();
 
         mConnectThread = new ConnectThread(device);
         mConnectThread.start();
@@ -243,9 +236,9 @@ public class BluetoothConnectionService {
             InputStream tmpIn = null;
             OutputStream tmpOut = null;
 
-            //dismiss the progressdialog when connection is established
+            //dismiss the dialog when connection is established
             try{
-                mProgressDialog.dismiss();
+                mDialog.dismiss();
             }catch (NullPointerException e){
                 e.printStackTrace();
             }

@@ -12,13 +12,21 @@ import com.example.diy_project_interface_app.R;
 
 import java.util.ArrayList;
 
-
+/**
+ * Used for List View in BluetoothDeviceActivity
+ */
 public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
 
     private LayoutInflater mLayoutInflater;
     private ArrayList<BluetoothDevice> mDevices;
     private int  mViewResourceId;
 
+    /**
+     * Adapter constructor
+     * @param context current Context
+     * @param tvResourceId Id of Listview
+     * @param devices found devices
+     */
     public DeviceListAdapter(Context context, int tvResourceId, ArrayList<BluetoothDevice> devices){
         super(context, tvResourceId,devices);
         this.mDevices = devices;
@@ -26,6 +34,9 @@ public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
         mViewResourceId = tvResourceId;
     }
 
+    /**
+     * display found Bluetooth Devices with Name and MAC address
+     */
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = mLayoutInflater.inflate(mViewResourceId, null);
 
