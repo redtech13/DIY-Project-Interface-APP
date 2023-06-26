@@ -16,6 +16,13 @@ public class ModuleSlider extends Module {
         initSlider();
     }
 
+    public ModuleSlider(int moduleTypeId, String name, int width, int height, View relatedView) {
+        super(moduleTypeId, name, width, height, relatedView);
+        this.sliderValue = 0;
+        slider = (SeekBar) relatedView;
+        initSlider();
+    }
+
     private void initSlider(){
 
 
