@@ -2,6 +2,7 @@ package com.example.diy_project_interface_app.Inner;
 
 import android.content.Context;
 
+import com.example.diy_project_interface_app.Modules.Module;
 import com.example.diy_project_interface_app.R;
 
 import java.util.ArrayList;
@@ -15,8 +16,11 @@ import java.util.Arrays;
  * To transform information into handleable formats.
  */
 
+enum PROT_STATE {EMPTY, VERSION, INIT}
 public class CommunicationProtocol{
     Context ctx;
+    PROT_STATE state = PROT_STATE.EMPTY;
+    int version = 0;
     public CommunicationProtocol(Context _ctx){
         ctx = _ctx;
     }
@@ -26,7 +30,7 @@ public class CommunicationProtocol{
      * Then uses necessary formatting rules and applies them
      * @return The String of a module to be send to the uC
      */
-    public String moduleToString(/*ModuleInterface module*/){
+    public String moduleToString(Module _module){
         StringBuilder builder = new StringBuilder();
         builder.append( ctx.getString(R.string.PROT_mod_prefix));
         //builder.append(module.getId());
@@ -45,6 +49,19 @@ public class CommunicationProtocol{
 
         builder.append( ctx.getString(R.string.PROT_mod_suffix));
 
+        return builder.toString();
+    }
+
+    public String modulesToBuildInfo(ArrayList<Module> _modules){
+    StringBuilder builder = new StringBuilder(ctx.getString(R.string.PROT_cmd_buildStart));
+        for (int i = 0; i < _modules.size(); i++) {
+            builder.append(ctx.getString(R.string.PROT_mod_prefix));
+            builder.append(Integer.toString(i));
+            builder.append(ctx.getString(R.string.PROT_mod_parameter));
+            builder.append(moduleToString(_modules.get(i)));
+            builder.append(ctx.getString(R.string.PROT_mod_suffix));
+        }
+    builder.append(ctx.getString(R.string.PROT_cmd_buildEnd));
         return builder.toString();
     }
 
@@ -103,21 +120,12 @@ public class CommunicationProtocol{
     }
 
 
-    //TODO: move this to modules
-    /**
-     * Converts type to class of corresponding type
-     * @param _id Reference for later
-     * @param _moduleinfo String containing module info (type,width,height,title,color etc.)
-     * @return Module of corresponding class
-     */
-    /*public static Module createModuleFromString(int _id, String[] _moduleinfo){
-        //_moduleinfo content theory:  type (byte)  ; width (int) ; height (int) ; title (String) not must ; color not must
-
-        switch (_moduleinfo[0]){
-            case 0: //simple text
-                return new SimpleText(_id, _moduleinfo[1], _moduleinfo[2], _moduleinfo[3]); //etc for all modules
-                break;
+    public String getHandshake(int _step){
+        switch (_step){
+            case 0:
+                return ctx.getString(R.string.PROT_cmd_versionRequest);
+            default:
+                return "";
         }
-        return null;
-    }*/
+    }
 }
