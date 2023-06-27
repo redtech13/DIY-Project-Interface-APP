@@ -18,5 +18,8 @@
     <!-- Errors -->
     <string name="ERR_buildInfo_incomplete">Incomplete Build Info</string>
 
+    <!-- moduleStrings -->
+    <string name="Title">TITLE</string>
+
 
 </resources>

@@ -3,6 +3,8 @@ package com.example.diy_project_interface_app.Modules;
 import android.view.View;
 import android.widget.SeekBar;
 
+import java.util.ArrayList;
+
 public class ModuleSlider extends Module {
 
     protected float sliderValue;
@@ -23,6 +25,13 @@ public class ModuleSlider extends Module {
         initSlider();
     }
 
+    @Override
+    public void updateInformation(ArrayList<String> receivedStrings) {
+        for (String str : receivedStrings) {
+            // was für Daten bekomme ich hier?
+        }
+    }
+
     private void initSlider(){
 
 
@@ -32,6 +41,8 @@ public class ModuleSlider extends Module {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // Hier wird der ausgewählte Wert aktualisiert
                 // progress enthält dann den aktuellen Wert des Sliders
+                informationChanged = true;
+                information = ""; //welches Format kommt hier rein
             }
 
             // Wird aufgerufen, wenn Slider berührt wird

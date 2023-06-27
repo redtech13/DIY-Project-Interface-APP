@@ -13,15 +13,27 @@ public class Modules {
         this.ctx = _ctx;
     }
 
-    public Module getModule(int type, int moduleTypeId, String name, int width, int height) {
+    /**
+     * 1 => SliderModule
+     * 2 => TitleModule
+     * 3 => Number/Text Module
+     * @param type
+     * @param moduleTypeId
+     * @param name
+     * @param width
+     * @param height
+     * @return
+     */
+    public Module getModule(int type, int moduleTypeId, String name, int width, int height, View relativeView) {
         switch (type) {
             case 1: // Slider
-                View sliderLayout = LayoutInflater.from(ctx).inflate(R.layout.module_slider, null);
-                return new ModuleSlider(moduleTypeId, name, width, height, sliderLayout);
+                return new ModuleSlider(moduleTypeId, name, width, height, relativeView);
 
-            case 2:
-                View exampleLayout = LayoutInflater.from(ctx).inflate(R.layout.module_example, null);
-                return new Module(moduleTypeId, name, width, height, exampleLayout);
+            case 2: // Title, big Text
+                return new Module(moduleTypeId, name, width, height, relativeView);
+
+            case 3: // Number/Text Module, can be switched
+                return new Module(moduleTypeId, name, width, height, relativeView);
 
             default:
                 return null;
@@ -38,12 +50,11 @@ public class Modules {
      * @param sliderValue
      * @return
      */
-    public Module getModule(int type, int moduleTypeId, String name, int width, int height, float sliderValue) {
+    public Module getModule(int type, int moduleTypeId, String name, int width, int height, float sliderValue, View relativeView) {
         if (type == 1) {
-            View sliderLayout = LayoutInflater.from(ctx).inflate(R.layout.module_slider, null);
-            return new ModuleSlider(moduleTypeId, name, width, height, sliderLayout, sliderValue);
+            return new ModuleSlider(moduleTypeId, name, width, height, relativeView);
         } else {
-            // wron Parameter for this Module type
+            // wrong Parameter for this Module type
             return null;
         }
     }
