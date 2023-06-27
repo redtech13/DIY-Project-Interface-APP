@@ -194,7 +194,9 @@ public class BluetoothDeviceActivity extends AppCompatActivity implements Adapte
 
         Intent intent = new Intent(BluetoothDeviceActivity.this, MainActivity.class);
         intent.putExtra("bt_device", device);
-        this.startActivity(intent);
+        setResult(1,intent); //Use Activity Result Launcher to process information
+        finish();
+        //this.startActivity(intent);
     }
 
 

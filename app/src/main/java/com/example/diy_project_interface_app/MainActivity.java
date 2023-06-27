@@ -12,10 +12,8 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,9 +28,7 @@ import com.example.diy_project_interface_app.Inner.CommunicationProtocol;
 import com.example.diy_project_interface_app.Modules.Module;
 
 import java.nio.charset.StandardCharsets;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
     /**
@@ -44,9 +40,12 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = result.getData();
             switch (result.getResultCode()){
                 case 1: //Device connected
+                    BluetoothDevice device = intent.getParcelableExtra("bt_device");
+                    bt_connection = new BluetoothConnectionService(MainActivity.this);
+                    if(device != null){
+                        bt_connection.startClient(device);
+                    }
                     //TODO: extract bundle and active device class
-                    //get device mac address and create communication class aka bluetooth
-                    //or pass Communication Class Instance (better)
                     break;
                 case 2: //Device not found / not connected
                     //try connecting to old device
@@ -60,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     CommunicationProtocol commprot;
     ArrayList<Module> modules;
     boolean isBuild = false;
-    //Communication device;
+    BluetoothConnectionService bt_connection;
     SharedPreferences preferences;
 
     @Override
@@ -90,24 +89,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    /**
-     * Establish connection with Bluetooth device
-     */
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Intent intent = getIntent();
-        BluetoothDevice device = intent.getParcelableExtra("bt_device");
-        BluetoothConnectionService bt_connection = new BluetoothConnectionService(MainActivity.this);
-        if(device != null){
-            bt_connection.startClient(device);
-        }
-        //TODO use bt_connection to send and receive
-        //send
-        //bt_connection.write("123".getBytes(StandardCharsets.UTF_8));
-        //receive
-        //byte_array = bt_connection.getmInput();
-    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -143,8 +124,8 @@ public class MainActivity extends AppCompatActivity {
                 modules.add(buildModule(module));
             }
             isBuild = true;
-            ModuleUpdateGetter updateGetter = new ModuleUpdateGetter();
-            updateGetter.onPostExecute(preferences.getInt(getString(R.string.pref_id_upInt),getResources().getInteger(R.integer.pref_upInt_def)));;
+            ModuleUpdater updateGetter = new ModuleUpdater(preferences.getInt(getString(R.string.pref_id_upInt),getResources().getInteger(R.integer.pref_upInt_def)));
+            updateGetter.start();
         }catch (IllegalArgumentException e){
             toastIt(e.getMessage());
         }
@@ -158,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
         int width = Integer.parseInt(aModuleInfo[1]);
         int height = Integer.parseInt(aModuleInfo[2]);
         Point pos = builder.getNextPosition(width,height);
+        //Modules.getModule(ArrayList<String> parameters, Point pos, int index)
         Module module = new Module(0,"",0,0,new View(this)); //Todo: change to  //Modules.getModule(type, pos.x,pos.y,width,height etc...)
 
         builder.addRectangle(pos,width,height);
@@ -209,38 +191,28 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class ModuleUpdateGetter extends AsyncTask<Integer, Void, String>{
+    public class ModuleUpdater extends Thread {
         int interval = 50;
-
-        protected void onPostExecute(int i) {
-            interval = i;
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    long mark = System.currentTimeMillis();
-                    //System.out.println(new Timestamp((int)System.currentTimeMillis()).toString());
-                    getModuleUpdates();
-                    handler.postDelayed(this, interval - System.currentTimeMillis() + mark);
-
-                }
-            },100);
+        public ModuleUpdater(int _interval) {
+           interval = _interval;
         }
 
-
-        @Override
-        protected String doInBackground(Integer... integers) {
-            interval = integers[0];
-            return null;
+        public void run(){
+            while (true) {
+                long mark = System.currentTimeMillis();
+                //System.out.println(new Timestamp((int)System.currentTimeMillis()).toString());
+                getModuleUpdates();
+                String message = bt_connection.getmInput().toString();
+                if(!message.isEmpty())
+                    updateModules(message);
+                SystemClock.sleep(interval - System.currentTimeMillis() + mark);
+            }
         }
     }
     private void getModuleUpdates(){
-        StringBuilder cmd = new StringBuilder("");
-        for(Module module: modules){
-            cmd.append(module.getInformation());
-        }
+        byte[] out = commprot.modulesToBuildInfo(modules).getBytes(StandardCharsets.UTF_8);
         //if(device.isConnected())
-        //  device.send(cmd);
+            bt_connection.write(out);
     }
 
     private void openPreferences(){
