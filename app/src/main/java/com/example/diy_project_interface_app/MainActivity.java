@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -31,6 +32,7 @@ import com.example.diy_project_interface_app.Communication.Bluetooth.BluetoothDe
 import com.example.diy_project_interface_app.Inner.CommunicationProtocol;
 import com.example.diy_project_interface_app.Modules.Module;
 
+import java.sql.Timestamp;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
@@ -51,6 +53,11 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     //TODO: extract bundle and active device class
+                    //get device mac address and create communication class aka bluetooth
+                    //or pass Communication Class Instance (better)
+                    break;
+                case 2: //Device not found / not connected
+                    //try connecting to old device
                     break;
                 case 2: //Device not found / not connected
                     //try connecting to old device
@@ -366,6 +373,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openDevices() {
+        Intent intent = new Intent(MainActivity.this, BluetoothDeviceActivity.class);
+        activityLauncher.launch(intent);
+    }
+
+    private void openPreferences(){
+        Intent intent = new Intent(MainActivity.this, PreferenceActivity.class);
+        activityLauncher.launch(intent);
+    }
+
+    private void openDevices(){
         Intent intent = new Intent(MainActivity.this, BluetoothDeviceActivity.class);
         activityLauncher.launch(intent);
     }
