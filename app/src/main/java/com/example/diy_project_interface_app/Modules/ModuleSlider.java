@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class ModuleSlider extends Module {
 
-    protected float sliderValue;
+    protected int sliderValue;
     protected SeekBar slider;
 
     public ModuleSlider(ArrayList<String> _Param, Point _Position) {
@@ -45,6 +45,7 @@ public class ModuleSlider extends Module {
             if (!receivedStrings.isEmpty()) {
                 try {
                     sliderValue = Integer.parseInt(receivedStrings.get(0));
+                    slider.setProgress(sliderValue, true);
                 } catch (NumberFormatException e) {
                     System.out.println("Fehler beim Parsen des Strings zu int: " + e.getMessage());
                 }
