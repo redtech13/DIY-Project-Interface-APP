@@ -27,34 +27,13 @@ public class Modules {
                     //return new ModuleNumber(_Param , _Position);
 
                 case "3":
-                    return new ModuleSlider(_Param , _Position);
+                    return new ModuleSlider(_Param, _Position);
 
                 case "4":
                     //return new ModuleTitle(_Param , _Position);
 
-                default:
-                    return null;
             }
+        }
         return null;
     }
-
-    /**
-     * Überladung der Funktion aufgrund von unterschiedlichen Parametern für den Slider
-     * @param type
-     * @param moduleTypeId
-     * @param name
-     * @param width
-     * @param height
-     * @param sliderValue
-     * @return
-     */
-    public Module getModule(int type, int moduleTypeId, String name, int width, int height, float sliderValue, View relativeView) {
-        if (type == 1) {
-            return new ModuleSlider(moduleTypeId, name, width, height, relativeView);
-        } else {
-            // wrong Parameter for this Module type
-            return null;
-        }
-    }
-
 }

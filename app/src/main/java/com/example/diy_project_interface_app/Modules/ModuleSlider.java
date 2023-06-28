@@ -1,13 +1,10 @@
 package com.example.diy_project_interface_app.Modules;
 
 import android.content.Context;
+import android.content.res.XmlResourceParser;
 import android.graphics.Point;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.SeekBar;
-
-import androidx.annotation.LayoutRes;
 
 import com.example.diy_project_interface_app.R;
 
@@ -38,9 +35,8 @@ public class ModuleSlider extends Module {
         initSlider();
     }
 
-    @Override
-    public @LayoutRes int getLayout(){
-        return R.layout.module_slider;
+    public XmlResourceParser getLayout(Context context) {
+        return context.getResources().getLayout(R.layout.module_slider);
     }
 
     @Override
@@ -58,8 +54,6 @@ public class ModuleSlider extends Module {
     }
 
     private void initSlider(){
-
-
         //auf der Seekbar will ich unseren Slider aufbauen morgen
         slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

@@ -81,10 +81,6 @@ public class Module {
         this.height = height;
     }
 
-    public int getCreationId() {
-        return creationId;
-    }
-
     public String getTitle() {
         return title;
     }
