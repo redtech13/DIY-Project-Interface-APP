@@ -9,12 +9,14 @@ import android.content.Context;
 import android.util.Log;
 import androidx.appcompat.app.AlertDialog;
 
+import com.example.diy_project_interface_app.MainActivity;
 import com.example.diy_project_interface_app.R;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 /**
@@ -31,7 +33,7 @@ public class BluetoothConnectionService {
     private BluetoothAdapter mBluetoothAdapter;
     Context mContext;
 
-    private byte[] mInput;
+    private String mInput = "";
 
     private AcceptThread mInsecureAcceptThread;
 
@@ -49,7 +51,7 @@ public class BluetoothConnectionService {
         start();
     }
 
-    public byte[] getmInput() {
+    public String getmInput() {
         return mInput;
     }
 
@@ -260,18 +262,26 @@ public class BluetoothConnectionService {
 
             int bytes; // bytes returned from read()
 
+            ((MainActivity) mContext).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((MainActivity)mContext).onConnected();
+                    Log.d("device","connected");
+                }
+            });
+
             // Keep listening to the InputStream until an exception occurs
             while (true) {
                 // Read from the InputStream
                 try {
                     bytes = mmInStream.read(buffer);
-                    String incomingMessage = new String(buffer, 0, bytes);
-                    Log.d(TAG, "InputStream: " + incomingMessage);
+                    String incoming = new String(buffer, 0, bytes, StandardCharsets.UTF_8);
+                    Log.d(TAG, "InputStream: " + incoming);
+                    mInput = incoming;
                 } catch (IOException e) {
                     Log.e(TAG, "write: Error reading Input Stream. " + e.getMessage() );
                     break;
                 }
-                mInput = buffer;
             }
         }
 

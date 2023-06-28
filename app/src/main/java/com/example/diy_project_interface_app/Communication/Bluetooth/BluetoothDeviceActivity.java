@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.diy_project_interface_app.MainActivity;
@@ -81,6 +82,7 @@ public class BluetoothDeviceActivity extends AppCompatActivity implements Adapte
      * -Executed by btnDiscover() method.
      */
     private BroadcastReceiver mBroadcastReceiver2 = new BroadcastReceiver() {
+        @RequiresPermission(allOf = {"android.permission.BLUETOOTH_CONNECT","android.permission.BLUETOOTH_SCAN"})
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
@@ -99,7 +101,9 @@ public class BluetoothDeviceActivity extends AppCompatActivity implements Adapte
     /**
      * Broadcast Receiver that detects bond state changes (Pairing status changes)
      */
+
     private final BroadcastReceiver mBroadcastReceiver3 = new BroadcastReceiver() {
+        @RequiresPermission(allOf = {"android.permission.BLUETOOTH_CONNECT","android.permission.BLUETOOTH_SCAN"})
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
@@ -156,6 +160,7 @@ public class BluetoothDeviceActivity extends AppCompatActivity implements Adapte
         lvNewDevices.setOnItemClickListener(BluetoothDeviceActivity.this);
 
         btnONOFF.setOnClickListener(new View.OnClickListener() {
+            @RequiresPermission(allOf = {"android.permission.BLUETOOTH_CONNECT","android.permission.BLUETOOTH_SCAN"})
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: enabling/disabling bluetooth.");
@@ -194,13 +199,15 @@ public class BluetoothDeviceActivity extends AppCompatActivity implements Adapte
 
         Intent intent = new Intent(BluetoothDeviceActivity.this, MainActivity.class);
         intent.putExtra("bt_device", device);
-        this.startActivity(intent);
+        setResult(1,intent); //Use Activity Result Launcher to process information
+        finish();
+        //this.startActivity(intent);
     }
 
 
     /**
      * Enable/Disable Bluetooth
-     */
+     */@RequiresPermission(allOf = {"android.permission.BLUETOOTH_CONNECT","android.permission.BLUETOOTH_SCAN"})
     public void enableDisableBT(){
         if(mBluetoothAdapter == null){
             Log.d(TAG, "enableDisableBT: Does not have BT capabilities.");
@@ -226,7 +233,7 @@ public class BluetoothDeviceActivity extends AppCompatActivity implements Adapte
     /**
      * Starts discovering available Bluetooth devices
      * @param view BluetoothDeviceActivity View
-     */
+     */@RequiresPermission(allOf = {"android.permission.BLUETOOTH_CONNECT","android.permission.BLUETOOTH_SCAN"})
     public void btnDiscover(View view) {
         Log.d(TAG, "btnDiscover: Looking for unpaired devices.");
         mBTDevices.clear();
@@ -280,6 +287,8 @@ public class BluetoothDeviceActivity extends AppCompatActivity implements Adapte
      * @param i position of view in Adapter
      * @param l row id of clicked item
      */
+
+    @RequiresPermission(allOf = {"android.permission.BLUETOOTH_CONNECT","android.permission.BLUETOOTH_SCAN"})
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         //first cancel discovery because its very memory intensive.
