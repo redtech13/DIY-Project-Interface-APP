@@ -10,11 +10,23 @@ import com.example.diy_project_interface_app.R;
 
 import java.util.ArrayList;
 
+/***
+ * Author: Jonas Sbiegay
+ * Studiengang: SMSB
+ * ModuleText is a Module with a Title and changable Text
+ */
+
 public class ModuleText extends Module {
 
     protected String text;
     protected TextView vText, vTitle;
 
+    /**
+     * Dynamischer Konstruktor, der nach der Dokumentation im Wiki initialisiert
+     * https://github.com/redtech13/DIY-Project-Interface-APP/wiki/Modules
+     * @param _Param
+     * @param _Position
+     */
     public ModuleText(ArrayList<String> _Param, Point _Position) {
         super(_Param, _Position);
         if(_Param.size() >= 5)
@@ -43,6 +55,11 @@ public class ModuleText extends Module {
         }
     }
 
+    /**
+     * Gibt das Layout nach außen, da jede Modul ein anderes Layout nutzt
+     * @param context
+     * @return
+     */
     public int getLayout(Context context) {
         return context.getResources().getIdentifier("module_text", "layout", context.getPackageName());
     }

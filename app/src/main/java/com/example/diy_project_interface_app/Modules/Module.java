@@ -29,6 +29,13 @@ public class Module {
     protected boolean informationChanged;
     protected ArrayList<String> information;
 
+
+    /**
+     * Dynamischer Konstruktor, der nach der Dokumentation im Wiki initialisiert
+     * https://github.com/redtech13/DIY-Project-Interface-APP/wiki/Modules
+     * @param _Param
+     * @param _Position
+     */
     public Module(ArrayList<String> _Param, Point _Position) {
         this.moduleTypeId = Integer.parseInt(_Param.get(0));
         this.width = Integer.parseInt(_Param.get(1));
@@ -61,6 +68,11 @@ public class Module {
         }
     }
 
+    /**
+     * Sofern die Werte geändert wurden, wird hier an den Mikrocontroller zurückgegeben
+     * https://github.com/redtech13/DIY-Project-Interface-APP/wiki/Modules
+     * @return
+     */
     public ArrayList<String> getInformation() {
         if (informationChanged) {
             informationChanged = false;

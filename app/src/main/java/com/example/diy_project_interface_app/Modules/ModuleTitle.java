@@ -9,10 +9,22 @@ import com.example.diy_project_interface_app.R;
 
 import java.util.ArrayList;
 
+/***
+ * Author: Jonas Sbiegay
+ * Studiengang: SMSB
+ * ModuleTitle is a Module that has a big Title on top
+ */
+
 public class ModuleTitle extends Module {
     protected String title;
     protected TextView vTitle;
 
+    /**
+     * Dynamischer Konstruktor, der nach der Dokumentation im Wiki initialisiert
+     * https://github.com/redtech13/DIY-Project-Interface-APP/wiki/Modules
+     * @param _Param
+     * @param _Position
+     */
     public ModuleTitle(ArrayList<String> _Param, Point _Position) {
         super(_Param, _Position);
         if(_Param.size() >= 5)
@@ -39,6 +51,11 @@ public class ModuleTitle extends Module {
         }
     }
 
+    /**
+     * Gibt das Layout nach außen, da jede Modul ein anderes Layout nutzt
+     * @param context
+     * @return
+     */
     public int getLayout(Context context) {
         return context.getResources().getIdentifier("module_title", "layout", context.getPackageName());
     }
