@@ -2,7 +2,6 @@ package com.example.diy_project_interface_app;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TableRow;
@@ -10,7 +9,13 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
+/***
+ * Author: David Wilke
+ * Matrikelnummer: 18301
+ * Studiengang: ETB8
+ * created: 26.06.2023
+ * Class to manage preferences and edit shared preferences
+ */
 public class PreferenceActivity extends AppCompatActivity {
 
     SharedPreferences preferences;
@@ -31,10 +36,17 @@ public class PreferenceActivity extends AppCompatActivity {
         loadPreferences();
     }
 
+    /**
+     * Load preferences into view with current values
+     */
     private void loadPreferences(){
         updateInterval.setText(Integer.toString(preferences.getInt(getString(R.string.pref_id_upInt),getResources().getInteger(R.integer.pref_upInt_def))));
     }
 
+    /**
+     * Check if all preferences are allowed, marks faulty preferences
+     * @return true if ok
+     */
     private boolean checkPreferences(){
         boolean noerror = true;
         //update Interval
@@ -50,6 +62,9 @@ public class PreferenceActivity extends AppCompatActivity {
         return noerror;
     }
 
+    /**
+     * saves preferences
+     */
     private void savePreferences(){
         //update Interval
         SharedPreferences.Editor editor = preferences.edit();
@@ -57,6 +72,10 @@ public class PreferenceActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    /**
+     * On save button clicked, check if saveable and saves
+     * @param _view
+     */
     public void btnSave(View _view){
         if(checkPreferences()){
             savePreferences();
@@ -66,10 +85,18 @@ public class PreferenceActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * closes activity without saving
+     * @param _view
+     */
     public void btnCancel(View _view){
         finish();
     }
 
+    /**
+     * Method to toast messages
+     * @param _message to be toasted
+     */
     private void toastIt(String _message){
         Toast toast = Toast.makeText(this,_message,Toast.LENGTH_LONG);
         toast.show();

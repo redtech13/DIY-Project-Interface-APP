@@ -14,33 +14,32 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.content.res.XmlResourceParser;
 import android.graphics.Point;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.example.diy_project_interface_app.Communication.Bluetooth.BluetoothConnectionService;
 import com.example.diy_project_interface_app.Communication.Bluetooth.BluetoothDeviceActivity;
+import com.example.diy_project_interface_app.Inner.Builder;
 import com.example.diy_project_interface_app.Inner.CommunicationProtocol;
 import com.example.diy_project_interface_app.Modules.Module;
 import com.example.diy_project_interface_app.Modules.Modules;
 
-import java.sql.Timestamp;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
+/***
+ * Author: David Wilke
+ * Matrikelnummer: 18301
+ * Studiengang: ETB8
+ * Class is launched on startup and overviews all traffic and main grid
+ */
 public class MainActivity extends AppCompatActivity {
     /**
      * Use this Launcher to start new activities and catch any results from returning
@@ -56,10 +55,6 @@ public class MainActivity extends AppCompatActivity {
                     if (device != null) {
                         bt_connection.startClient(device);
                     }
-
-                    //TODO: extract bundle and active device class
-                    //get device mac address and create communication class aka bluetooth
-                    //or pass Communication Class Instance (better)
                     break;
                 case 2: //Device not found / not connected
                     //try connecting to old device
@@ -117,6 +112,9 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
         this.registerReceiver(mReceiver, filter);
 
+        if(bt_connection==null)
+            openDevices();
+
         /*if(!device.isConnected){
             openDevices();
         }*/
@@ -150,24 +148,39 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Executed when device is connected, initiates handshake
+     */
     public void onConnected(){
         CommHandler handler = new CommHandler(COMM_GOAL.HANDSHAKE,MainActivity.this);
         handler.start();
     }
+
+    /**
+     * Executed when handshake has been confirmed
+     * @param _version of the library on end device
+     */
     private void successHandshake(int _version){
         CommHandler com = new CommHandler(COMM_GOAL.INIT,this);
         com.start();
         toastIt("Found Library");
     }
+
+    /**
+     * Executed when End Device has been activated
+     */
     private void successInit(){
         CommHandler com = new CommHandler(COMM_GOAL.BUILDINFO,this);
         com.start();
-        toastIt("Initialized");
+        //toastIt("Initialized");
     }
+
+    /**
+     * Executed when buildinfo is received
+     * @param _buildInfo the received buildinfo
+     */
     private void successBuildInfo(String _buildInfo){
-        toastIt("Got Buildinfo");
-        Log.d("buildinfo",_buildInfo);
+        //toastIt("Got Buildinfo");
         buildLayout(_buildInfo);
     }
 
@@ -181,6 +194,9 @@ public class MainActivity extends AppCompatActivity {
         tcom.start();
     }
 
+    /**
+     * Request data and wait for answer on another thread
+     */
     public class CommHandler extends Thread {
         COMM_GOAL goal = COMM_GOAL.NONE;
         MainActivity ctx;
@@ -198,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case HANDSHAKE:
                     bt_connection.write(commprot.getHandshake().getBytes(StandardCharsets.UTF_8));
-                    for (int i = 0; i < 150; i++) {
+                    for (int i = 0; i < 100; i++) {
                         SystemClock.sleep(10);
                         try {
                             String input = bt_connection.getmInput();
@@ -226,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case INIT:
                     bt_connection.write(commprot.getInit().getBytes(StandardCharsets.UTF_8));
-                    for (int i = 0; i < 150; i++) {
+                    for (int i = 0; i < 100; i++) {
                         SystemClock.sleep(10);
                         try {
                             if (commprot.checkInit(bt_connection.getmInput())) {
@@ -252,12 +268,10 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case BUILDINFO:
                     bt_connection.write(commprot.getBuildInfoRequest().getBytes(StandardCharsets.UTF_8));
-                    for (int i = 0; i < 200; i++) {
+                    for (int i = 0; i < 100; i++) {
                         SystemClock.sleep(10);
                         try {
                             String input = bt_connection.getmInput();
-                            Log.d("connection",input);
-                            Log.d("connection","l:"+input.length());
                             if (commprot.checkBuildInfo(input)) {
                                 ctx.runOnUiThread(new Runnable() {
                                     @Override
@@ -287,25 +301,34 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Builder for the GUI overall control
+     * @param _buildInfo build data
+     */
     private void buildLayout(String _buildInfo) {
         try {
+            buildReset();
             builder = new Builder(grid.getWidth(), grid.getHeight(), commprot.getColumns(_buildInfo), _buildInfo); //Instantiate Builder
-            ArrayList<ArrayList<String>> moduleinfos = commprot.createModuleInfos(builder.buildInfo); //Get Module Infos (a list of a list of module parameters
+            ArrayList<ArrayList<String>> moduleinfos = commprot.createModuleInfos(builder.getBuildInfo()); //Get Module Infos (a list of a list of module parameters
             //At this point errors might have been avoided, so we can do new build confirmed stuff here
 
             moduleinfos.remove(0);
             for (ArrayList<String> module : moduleinfos) {
-                //buildModule(module); //TODO: change to return type module
                 modules.add(buildModule(module));
             }
             isBuild = true;
             ModuleUpdater updateGetter = new ModuleUpdater(preferences.getInt(getString(R.string.pref_id_upInt), getResources().getInteger(R.integer.pref_upInt_def)), this);
-            //updateGetter.start();
+            updateGetter.start();
         } catch (IllegalArgumentException e) {
             toastIt(e.getMessage());
         }
     }
 
+    /**
+     * Places a single module in the gui as well instantiate module itself
+     * @param moduleInfo cleaned information for a single module
+     * @return finished and ready module
+     */
     private Module buildModule(ArrayList<String> moduleInfo) {
         String[] aModuleInfo = new String[moduleInfo.size()];
         moduleInfo.toArray(aModuleInfo); //convert to array, to give to module
@@ -337,32 +360,51 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Old path to request buildinfo, replaced with thread worker, now used for testing
+     * @return buildinfo
+     */
     private String buildRequest() {
-        //Todo: request build info from device
         //return "_-_´5;`´0;4;1`___"; //Testing
         return "_-_´5;`´3;3;1;Slider1;20`´1;1;2;Module;Text`´2;3;1;Speed;m/s`´4;4;1;Broadcast;ModuleTitle`___"; //Testing
         //return "_-_´5;`´0;4;1`´3;1;3`´0;3;2`´3;5;1`´0;1;2`´0;1;3`´0;1;3`´0;2;2`´0;1;3`´0;2;2`´0;3;1`´0;2;1`___"; //Testing
     }
 
+    /**
+     * Clean GUI and memory of previously placed modules
+     */
     private void buildReset() {
         //Clear Grid
         grid.removeAllViews();
+        modules = new ArrayList<Module>();
         isBuild = false;
     }
 
+    /**
+     * Create a short toast
+     * @param _message to be toasted
+     */
     private void toastIt(String _message) {
         Toast toast = Toast.makeText(this, _message, Toast.LENGTH_SHORT);
         toast.show();
     }
 
+    /**
+     * Regularly called to update modules with new information
+     * @param _updateInfo similar to buildinfo, but contains new values
+     */
     private void updateModules(String _updateInfo) {
         if (isBuild) {
-            for (ArrayList<String> moduleinfo : commprot.createModuleInfos(_updateInfo)) {
-                //modules.get(Integer.parseInt(moduleinfo.remove(0))).updateInformation(moduleinfo);  //TODO: need updateInformation to take in ArrayList<String> instead of String
-            }
+                for (ArrayList<String> moduleinfo : commprot.createModuleInfos(_updateInfo)) {
+                    modules.get(Integer.parseInt(moduleinfo.remove(0))).updateInformation(moduleinfo);
+                }
+
         }
     }
 
+    /**
+     * Class to regularly keep communication between end device and app
+     */
     public class ModuleUpdater extends Thread {
         int interval = 50;
         MainActivity ctx;
@@ -380,38 +422,40 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         getModuleUpdates();
-                        String message = bt_connection.getmInput().toString();
-                        if (!message.isEmpty())
+                        String message = bt_connection.getmInput();
+                        if(commprot.checkBuildInfo(message))
                             updateModules(message);
                     }
                 });
 
-                SystemClock.sleep(interval - System.currentTimeMillis() + mark);
+                SystemClock.sleep(Math.max(interval - System.currentTimeMillis() + mark,0));
             }
         }
-
-
     }
 
+    /**
+     * Gets new information from modules on app and send it to end device
+     */
     private void getModuleUpdates() {
         byte[] out = commprot.modulesToBuildInfo(modules).getBytes(StandardCharsets.UTF_8);
         //if(device.isConnected())
-        bt_connection.write(out);
+        if(out.length>0)
+            bt_connection.write(out);
     }
 
+    /**
+     * Switch to preference activity
+     */
     private void openPreferences() {
         Intent intent = new Intent(MainActivity.this, PreferenceActivity.class);
         activityLauncher.launch(intent);
     }
 
+    /**
+     * Switch to devices activity
+     */
     private void openDevices() {
         Intent intent = new Intent(MainActivity.this, BluetoothDeviceActivity.class);
         activityLauncher.launch(intent);
     }
-
-    //TODO: keep communication active
-    //need callback function for receiving with flags of what is active (enum)
-    //make build process async and build on callback
-
-
 }

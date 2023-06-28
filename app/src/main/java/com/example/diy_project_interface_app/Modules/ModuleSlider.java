@@ -66,12 +66,12 @@ public class ModuleSlider extends Module {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // Hier wird der ausgewählte Wert aktualisiert
                 // progress enthält dann den aktuellen Wert des Sliders
-                informationChanged = true;
                 if (information.isEmpty()) {
                     information.add(String.valueOf(progress));
                 } else {
                     information.set(0, String.valueOf(progress));
                 }
+                informationChanged = true;
             }
 
             // Wird aufgerufen, wenn Slider berührt wird

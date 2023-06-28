@@ -1,7 +1,6 @@
 package com.example.diy_project_interface_app.Inner;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.example.diy_project_interface_app.Modules.Module;
 import com.example.diy_project_interface_app.R;
@@ -33,7 +32,16 @@ public class CommunicationProtocol{
      */
     public String moduleToString(Module _module){
         StringBuilder builder = new StringBuilder();
-        builder.append( ctx.getString(R.string.PROT_mod_prefix));
+
+
+        ArrayList<String> moduleinfo = _module.getInformation();
+        if(moduleinfo != null){
+            builder.append(moduleinfo.get(0));
+            for (int i = 1; i < moduleinfo.size(); i++) {
+                builder.append(ctx.getString(R.string.PROT_mod_parameter));
+                builder.append(moduleinfo.get(i));
+            }
+        }
         //builder.append(module.getId());
 
         //if parameters aka commands for the uC are empty, no need to send
@@ -48,21 +56,51 @@ public class CommunicationProtocol{
         }
          */
 
-        builder.append( ctx.getString(R.string.PROT_mod_suffix));
 
         return builder.toString();
     }
 
+    /**
+     * Formats a list of strings to moduleinfo rules
+     * @param _moduleinfo the list of string of parameters
+     * @return sendable string
+     */
+    public String moduleToString(ArrayList<String> _moduleinfo){
+        StringBuilder builder = new StringBuilder();
+        if(_moduleinfo != null){
+            builder.append(_moduleinfo.get(0));
+            for (int i = 1; i < _moduleinfo.size(); i++) {
+                builder.append(ctx.getString(R.string.PROT_mod_parameter));
+                builder.append(_moduleinfo.get(i));
+            }
+        }
+
+        return builder.toString();
+    }
+
+    /**
+     * Converts a list of modules into full updateinfo string
+     * @param _modules list of modules
+     * @return updateinfo
+     */
     public String modulesToBuildInfo(ArrayList<Module> _modules){
     StringBuilder builder = new StringBuilder(ctx.getString(R.string.PROT_cmd_buildStart));
+    int c = 0;
         for (int i = 0; i < _modules.size(); i++) {
-            builder.append(ctx.getString(R.string.PROT_mod_prefix));
-            builder.append(Integer.toString(i));
-            builder.append(ctx.getString(R.string.PROT_mod_parameter));
-            builder.append(moduleToString(_modules.get(i)));
-            builder.append(ctx.getString(R.string.PROT_mod_suffix));
+            Module module = _modules.get(i);
+            ArrayList<String> params = module.getInformation();
+            if(params != null){
+                builder.append(ctx.getString(R.string.PROT_mod_prefix));
+                builder.append(Integer.toString(i));
+                builder.append(ctx.getString(R.string.PROT_mod_parameter));
+                builder.append(moduleToString(params));
+                builder.append(ctx.getString(R.string.PROT_mod_suffix));
+                c++;
+            }
         }
     builder.append(ctx.getString(R.string.PROT_cmd_buildEnd));
+        if(c==0)
+            return "";
         return builder.toString();
     }
 
@@ -117,34 +155,57 @@ public class CommunicationProtocol{
      * @return Amount of columns requested
      */
     public int getColumns(String _buildInfo) throws IllegalArgumentException{
-        ArrayList<String> data = buildInfoToModuleStrings(_buildInfo);
-        String first = data.get(0);
-        String[] second = first.split(";");
-        String third = second[0];
-        return Integer.parseInt(third);
+        return Integer.parseInt(buildInfoToModuleStrings(_buildInfo).get(0).split(";")[0]);
     }
 
-
+    /**
+     * Returns the indicator for the handshake initiator
+     * @return
+     */
     public String getHandshake(){
         return ctx.getString(R.string.PROT_cmd_versionRequest);
     }
 
+    /**
+     * Check if Answer of handshake is compatible and what result
+     * @param _input answer
+     * @return version number > 0 is ok
+     * @throws NumberFormatException
+     */
     public int getHandshakeVersion(String _input) throws NumberFormatException{
         return Integer.parseInt(_input.replace(ctx.getString(R.string.PROT_cmd_versionRequest),""));
     }
 
+    /**
+     * Returns buildinfo request string
+     * @return
+     */
     public String getBuildInfoRequest(){
         return ctx.getString(R.string.PROT_cmd_buildRequest);
     }
 
+    /**
+     * Checks if buildinfo might be usable
+     * @param _input possible buildinfo
+     * @return true if ok
+     */
     public boolean checkBuildInfo(String _input){
-        return _input.startsWith(ctx.getString(R.string.PROT_cmd_buildStart)) && _input.endsWith(ctx.getString(R.string.PROT_cmd_buildEnd));
+        return _input != null && _input.startsWith(ctx.getString(R.string.PROT_cmd_buildStart)) && _input.endsWith(ctx.getString(R.string.PROT_cmd_buildEnd));
     }
 
+    /**
+     * Returns Init String
+     * @return
+     */
     public String getInit(){
         return ctx.getString(R.string.PROT_cmd_modeActive);
     }
 
+    /**
+     * Check for confirmation respond
+     * @param _input answer
+     * @return true if is confirmed
+     */
     public boolean checkInit(String _input){
         return _input.equals(ctx.getString(R.string.PROT_mod_confirm));
     }
