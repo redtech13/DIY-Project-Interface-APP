@@ -10,13 +10,10 @@ import com.example.diy_project_interface_app.R;
 
 import java.util.ArrayList;
 
-//TODO: nicht fertig?
-/*
 public class ModuleSlider extends Module {
 
     protected float sliderValue;
     protected SeekBar slider;
-
 
     public ModuleSlider(ArrayList<String> _Param, Point _Position) {
         super(_Param, _Position);
@@ -87,4 +84,4 @@ public class ModuleSlider extends Module {
 
 
 
-}*/
+}

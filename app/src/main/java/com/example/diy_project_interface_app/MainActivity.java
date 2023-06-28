@@ -267,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
             }
             isBuild = true;
             ModuleUpdater updateGetter = new ModuleUpdater(preferences.getInt(getString(R.string.pref_id_upInt), getResources().getInteger(R.integer.pref_upInt_def)), this);
-            updateGetter.start();
+            //updateGetter.start();
         } catch (IllegalArgumentException e) {
             toastIt(e.getMessage());
         }
@@ -288,6 +288,7 @@ public class MainActivity extends AppCompatActivity {
         int viewId = module.getLayout(this); //test module
         ViewGroup modView = (ViewGroup) inflater.inflate(viewId,grid);
         ConstraintLayout constraint = (ConstraintLayout) modView.getChildAt(modView.getChildCount()-1);
+        module.setView(constraint);
       
 //        ConstraintSet conSet = new ConstraintSet();
 //        conSet.clone(grid);
@@ -306,7 +307,8 @@ public class MainActivity extends AppCompatActivity {
     private String buildRequest() {
         //Todo: request build info from device
         //return "_-_´5;`´0;4;1`___"; //Testing
-        return "_-_´5;`´0;4;1`´3;1;3`´0;3;2`´3;5;1`´0;1;2`´0;1;3`´0;1;3`´0;2;2`´0;1;3`´0;2;2`´0;3;1`´0;2;1`___"; //Testing
+        return "_-_´5;`´3;3;1`___"; //Testing
+        //return "_-_´5;`´0;4;1`´3;1;3`´0;3;2`´3;5;1`´0;1;2`´0;1;3`´0;1;3`´0;2;2`´0;1;3`´0;2;2`´0;3;1`´0;2;1`___"; //Testing
     }
 
     private void buildReset() {
