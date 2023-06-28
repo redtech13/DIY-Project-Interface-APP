@@ -35,9 +35,10 @@ public class ModuleSlider extends Module {
         initSlider();
     }
 
-    public XmlResourceParser getLayout(Context context) {
-        return context.getResources().getLayout(R.layout.module_slider);
+    public int getLayout(Context context) {
+        return context.getResources().getIdentifier("module_slider", "layout", context.getPackageName());
     }
+
 
     @Override
     public void updateInformation(ArrayList<String> receivedStrings) {

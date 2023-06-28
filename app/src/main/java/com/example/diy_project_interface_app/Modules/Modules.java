@@ -9,7 +9,7 @@ import com.example.diy_project_interface_app.R;
 
 import java.util.ArrayList;
 
-public class Modules {
+public abstract class Modules {
     Context ctx;
 
     Modules(Context _ctx){
@@ -17,7 +17,7 @@ public class Modules {
     }
 
 
-    public Module getModule(ArrayList<String> _Param , Point _Position) {
+    public static Module getModule(ArrayList<String> _Param, Point _Position) {
         if (!_Param.isEmpty()) {
             switch (_Param.get(0)) {
                 case "1":

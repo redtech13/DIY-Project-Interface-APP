@@ -1,5 +1,7 @@
 package com.example.diy_project_interface_app.Modules;
 
+import android.content.Context;
+import android.content.res.XmlResourceParser;
 import android.graphics.Point;
 import android.view.View;
 
@@ -58,9 +60,10 @@ public class Module {
         relatedView = _view;
     }
 
-    public @LayoutRes int getLayout() {
-        return R.layout.module_example;
+    public int getLayout(Context context) {
+        return context.getResources().getIdentifier("module_example", "layout", context.getPackageName());
     }
+
 
     // relevante Getter und Setter
     public String getName() {
