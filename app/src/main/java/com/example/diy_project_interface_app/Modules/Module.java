@@ -1,5 +1,7 @@
 package com.example.diy_project_interface_app.Modules;
 
+import android.content.Context;
+import android.content.res.XmlResourceParser;
 import android.graphics.Point;
 import android.view.View;
 
@@ -21,7 +23,7 @@ public class Module {
     protected String name;
     protected int width, height;
     protected View relatedView;
-    protected String title;
+    protected int positionX, positionY;
     protected boolean isEnabled;
     protected String description;
     protected boolean informationChanged;
@@ -29,9 +31,11 @@ public class Module {
 
     public Module(ArrayList<String> _Param, Point _Position) {
         this.moduleTypeId = Integer.parseInt(_Param.get(0));
-        this.name = _Param.get(1);
-        this.width = _Position.x;
-        this.height = _Position.y;
+        this.width = Integer.parseInt(_Param.get(1));
+        this.height = Integer.parseInt(_Param.get(2));
+        this.name = _Param.get(3);
+        this.positionX = _Position.x;
+        this.positionY = _Position.y;
         this.isEnabled = false;
         this.description = "";
         this.informationChanged = false;
@@ -52,13 +56,14 @@ public class Module {
         return null;
     }
 
-    public void setView(View _view){
+    public void setView(View _view) {
         relatedView = _view;
     }
 
-    public @LayoutRes int getLayout(){
-        return R.layout.module_example;
+    public int getLayout(Context context) {
+        return context.getResources().getIdentifier("module_example", "layout", context.getPackageName());
     }
+
 
     // relevante Getter und Setter
     public String getName() {
@@ -81,15 +86,22 @@ public class Module {
         this.height = height;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
     public boolean isEnabled() {
         return isEnabled;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    @Override
+    public String toString() {
+        return "ModulTypID => " + String.valueOf(this.moduleTypeId) + "\n"+
+                "Name => " + this.name +"\n"+
+                "Width, Height => " + String.valueOf(this.width) + ", " + String.valueOf(this.height) +"\n"+
+                "posX, posY => " + String.valueOf(this.positionX) + ", " + String.valueOf(this.positionY) +"\n"+
+                "informationChanged => " + String.valueOf(this.informationChanged) +"\n"+
+                "information" + information.toString()
+                ;
     }
 }
