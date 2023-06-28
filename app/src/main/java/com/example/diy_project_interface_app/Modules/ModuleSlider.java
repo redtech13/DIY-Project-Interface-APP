@@ -18,10 +18,10 @@ public class ModuleSlider extends Module {
 
     public ModuleSlider(ArrayList<String> _Param, Point _Position) {
         super(_Param, _Position);
-        if(_Param.size() >= 3)
+        if(_Param.size() >= 5)
         {
             try {
-                this.sliderValue = Integer.parseInt(_Param.get(2));
+                this.sliderValue = Integer.parseInt(_Param.get(4));
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
