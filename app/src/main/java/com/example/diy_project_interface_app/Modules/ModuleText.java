@@ -33,6 +33,9 @@ public class ModuleText extends Module {
         vText = _view.findViewById(R.id.contentText);
         vTitle = _view.findViewById(R.id.titleText);
         vTitle.setText(name);
+        if(text != null){
+            vText.setText(text);
+        }
     }
 
     public int getLayout(Context context) {

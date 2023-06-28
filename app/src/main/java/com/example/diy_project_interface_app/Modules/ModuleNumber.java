@@ -10,7 +10,7 @@ import com.example.diy_project_interface_app.R;
 import java.util.ArrayList;
 
 public class ModuleNumber extends Module {
-    protected String Unit;
+    protected String Unit, Number;
     protected TextView vNumber, vUnit;
 
     public ModuleNumber(ArrayList<String> _Param, Point _Position) {
@@ -23,6 +23,14 @@ public class ModuleNumber extends Module {
                 e.printStackTrace();
             }
         }
+        if(_Param.size() >= 6)
+        {
+            try {
+                this.Number = _Param.get(5);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -31,6 +39,9 @@ public class ModuleNumber extends Module {
         vNumber = _view.findViewById(R.id.valueText);
         vUnit = _view.findViewById(R.id.unitText);
         vUnit.setText(Unit);
+        if(Number != null){
+            vNumber.setText(Number);
+        }
     }
 
     public int getLayout(Context context) {

@@ -25,6 +25,7 @@ public class ModuleSlider extends Module {
                 e.printStackTrace();
             }
         }
+        sliderValue = 50;
     }
 
     @Override
@@ -32,6 +33,9 @@ public class ModuleSlider extends Module {
         relatedView = _view;
         slider = _view.findViewById(R.id.slider);
         initSlider();
+        if(sliderValue != 50){
+            slider.setProgress(sliderValue, true);
+        }
     }
 
     public int getLayout(Context context) {

@@ -29,6 +29,9 @@ public class ModuleTitle extends Module {
     public void setView(View _view){
         relatedView = _view;
         vTitle = _view.findViewById(R.id.largeText);
+        if(title != null){
+            vTitle.setText(title);
+        }
     }
 
     public int getLayout(Context context) {
