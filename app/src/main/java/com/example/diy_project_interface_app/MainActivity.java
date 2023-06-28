@@ -396,7 +396,10 @@ public class MainActivity extends AppCompatActivity {
     private void updateModules(String _updateInfo) {
         if (isBuild) {
                 for (ArrayList<String> moduleinfo : commprot.createModuleInfos(_updateInfo)) {
-                    modules.get(Integer.parseInt(moduleinfo.remove(0))).updateInformation(moduleinfo);
+                    try {
+                        modules.get(Integer.parseInt(moduleinfo.remove(0))).updateInformation(moduleinfo);
+                    }catch (IndexOutOfBoundsException e){}
+
                 }
 
         }
