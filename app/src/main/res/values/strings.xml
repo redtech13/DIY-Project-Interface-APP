@@ -11,7 +11,7 @@
     <string name="PROT_cmd_buildRequest">BI</string>
     <string name="PROT_cmd_buildStart">_-_</string>
     <string name="PROT_cmd_buildEnd">___</string>
-    <string name="PROT_mod_prefix">´</string>
+    <string name="PROT_mod_prefix">\'</string>
     <string name="PROT_mod_suffix">`</string>
     <string name="PROT_mod_parameter">;</string>
     <string name="PROT_mod_confirm">OK</string>
