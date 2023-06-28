@@ -12,6 +12,8 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.content.res.XmlResourceParser;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,6 +33,7 @@ import com.example.diy_project_interface_app.Communication.Bluetooth.BluetoothCo
 import com.example.diy_project_interface_app.Communication.Bluetooth.BluetoothDeviceActivity;
 import com.example.diy_project_interface_app.Inner.CommunicationProtocol;
 import com.example.diy_project_interface_app.Modules.Module;
+import com.example.diy_project_interface_app.Modules.Modules;
 
 import java.sql.Timestamp;
 import java.nio.charset.StandardCharsets;
@@ -273,22 +276,19 @@ public class MainActivity extends AppCompatActivity {
     private Module buildModule(ArrayList<String> moduleInfo) {
         String[] aModuleInfo = new String[moduleInfo.size()];
         moduleInfo.toArray(aModuleInfo); //convert to array, to give to module
-        int type = Integer.parseInt(aModuleInfo[0]);
         int width = Integer.parseInt(aModuleInfo[1]);
         int height = Integer.parseInt(aModuleInfo[2]);
-        Point pos = builder.getNextPosition(width, height);
-        //Modules.getModule(ArrayList<String> parameters, Point pos, int index)
-        Module module = new Module(0, "", 0, 0, new View(this)); //Todo: change to  //Modules.getModule(type, pos.x,pos.y,width,height etc...)
+        Point pos = builder.getNextPosition(width,height);
+        Module module = Modules.getModule(moduleInfo, pos);
 
-        builder.addRectangle(pos, width, height);
-        //int viewid = module.getView();
-        int viewId = R.layout.module_example; //test module
+
+        builder.addRectangle(pos,width,height);
 
         LayoutInflater inflater = LayoutInflater.from(this);
-        ViewGroup modView = (ViewGroup) inflater.inflate(viewId, grid);
-        ConstraintLayout constraint = (ConstraintLayout) modView.getChildAt(modView.getChildCount() - 1);
-        int vid = View.generateViewId();
-        constraint.setId(vid + 54812);
+        int viewId = module.getLayout(this); //test module
+        ViewGroup modView = (ViewGroup) inflater.inflate(viewId,grid);
+        ConstraintLayout constraint = (ConstraintLayout) modView.getChildAt(modView.getChildCount()-1);
+      
 //        ConstraintSet conSet = new ConstraintSet();
 //        conSet.clone(grid);
 //        conSet.connect(constraint.getId(),ConstraintSet.TOP,grid.getId(),ConstraintSet.TOP);
