@@ -1,9 +1,8 @@
-package com.example.diy_project_interface_app;
+package com.example.diy_project_interface_app.Inner;
 
 import android.graphics.Point;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
 /***
  * Author: David Wilke
@@ -105,12 +104,25 @@ public class Builder {
         }
     }
 
-
+    /**
+     * Calculates the accurate pixel width in relation to the grid
+     * @param _width Width in columns
+     * @return Width in pixels
+     */
     public int getWidthPx(int _width){
         return _width * cellwidth;
     }
 
+    /**
+     * Calculates the accurate pixel height in relation to the grid
+     * @param _height Height in columns
+     * @return Height in pixels
+     */
     public int getHeightPx(int _height){
         return _height * cellheight;
+    }
+
+    public String getBuildInfo(){
+        return buildInfo;
     }
 }

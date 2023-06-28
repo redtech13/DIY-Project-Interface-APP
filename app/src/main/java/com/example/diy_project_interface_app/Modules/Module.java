@@ -33,7 +33,14 @@ public class Module {
         this.moduleTypeId = Integer.parseInt(_Param.get(0));
         this.width = Integer.parseInt(_Param.get(1));
         this.height = Integer.parseInt(_Param.get(2));
-        this.name = _Param.get(3);
+        if(_Param.size() >= 4)
+        {
+            try {
+                this.name = String.valueOf(_Param.get(3));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
         this.positionX = _Position.x;
         this.positionY = _Position.y;
         this.isEnabled = false;

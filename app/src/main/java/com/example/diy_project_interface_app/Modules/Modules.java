@@ -21,16 +21,16 @@ public abstract class Modules {
         if (!_Param.isEmpty()) {
             switch (_Param.get(0)) {
                 case "1":
-                    //return new ModuleText(_Param , _Position);
+                    return new ModuleText(_Param , _Position);
 
                 case "2":
-                    //return new ModuleNumber(_Param , _Position);
+                    return new ModuleNumber(_Param , _Position);
 
                 case "3":
                     return new ModuleSlider(_Param, _Position);
 
                 case "4":
-                    //return new ModuleTitle(_Param , _Position);
+                    return new ModuleTitle(_Param , _Position);
 
             }
         }

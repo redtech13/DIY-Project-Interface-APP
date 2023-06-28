@@ -38,6 +38,8 @@
   
     <!-- moduleStrings -->
     <string name="Title">TITLE</string>
+    <string name="Unit">m/s</string>
+    <string name="Text">Text</string>
 
 
 </resources>
