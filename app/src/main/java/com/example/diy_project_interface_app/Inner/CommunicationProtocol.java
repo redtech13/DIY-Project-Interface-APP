@@ -117,7 +117,11 @@ public class CommunicationProtocol{
      * @return Amount of columns requested
      */
     public int getColumns(String _buildInfo) throws IllegalArgumentException{
-        return Integer.parseInt(buildInfoToModuleStrings(_buildInfo).get(0).split(ctx.getString(R.string.PROT_mod_parameter))[0]);
+        ArrayList<String> data = buildInfoToModuleStrings(_buildInfo);
+        String first = data.get(0);
+        String[] second = first.split(";");
+        String third = second[0];
+        return Integer.parseInt(third);
     }
 
 

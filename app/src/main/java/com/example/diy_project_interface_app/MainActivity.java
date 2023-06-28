@@ -129,12 +129,16 @@ public class MainActivity extends AppCompatActivity {
     private void successHandshake(int _version){
         CommHandler com = new CommHandler(COMM_GOAL.INIT,this);
         com.start();
+        toastIt("Found Library");
     }
     private void successInit(){
         CommHandler com = new CommHandler(COMM_GOAL.BUILDINFO,this);
         com.start();
+        toastIt("Initialized");
     }
     private void successBuildInfo(String _buildInfo){
+        toastIt("Got Buildinfo");
+        Log.d("buildinfo",_buildInfo);
         buildLayout(_buildInfo);
     }
 
@@ -169,8 +173,6 @@ public class MainActivity extends AppCompatActivity {
                         SystemClock.sleep(10);
                         try {
                             String input = bt_connection.getmInput();
-                            Log.d("connection",input);
-                            Log.d("connection","l:"+input.length());
                             int version = commprot.getHandshakeVersion(input);
                             if (version > 0) {
                                 ctx.runOnUiThread(new Runnable() {
@@ -221,10 +223,12 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case BUILDINFO:
                     bt_connection.write(commprot.getBuildInfoRequest().getBytes(StandardCharsets.UTF_8));
-                    for (int i = 0; i < 150; i++) {
+                    for (int i = 0; i < 200; i++) {
                         SystemClock.sleep(10);
                         try {
                             String input = bt_connection.getmInput();
+                            Log.d("connection",input);
+                            Log.d("connection","l:"+input.length());
                             if (commprot.checkBuildInfo(input)) {
                                 ctx.runOnUiThread(new Runnable() {
                                     @Override
