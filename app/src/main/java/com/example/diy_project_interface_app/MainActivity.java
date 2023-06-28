@@ -9,8 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
@@ -71,10 +73,31 @@ public class MainActivity extends AppCompatActivity {
     CommunicationProtocol commprot;
     ArrayList<Module> modules;
     boolean isBuild = false;
+    boolean isConnected = false;
     BluetoothConnectionService bt_connection;
     SharedPreferences preferences;
 
     public enum COMM_GOAL {NONE, HANDSHAKE, INIT, BUILDINFO}
+
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
+            //Device is now connected
+                isConnected = true;
+            }
+            else if (BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED.equals(action)) {
+            //Device is about to disconnect
+                isConnected = false;
+            }
+            else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
+            //Device has disconnected
+                isConnected = false;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +110,12 @@ public class MainActivity extends AppCompatActivity {
         grid = (FrameLayout) findViewById(R.id.grid);
         commprot = new CommunicationProtocol(this);
         modules = new ArrayList<Module>();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+        filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);
+        filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+        this.registerReceiver(mReceiver, filter);
 
         /*if(!device.isConnected){
             openDevices();
