@@ -11,11 +11,24 @@ import com.example.diy_project_interface_app.R;
 
 import java.util.ArrayList;
 
+/***
+ * Author: Jonas Sbiegay
+ * Studiengang: SMSB
+ * ModuleSlider is a Module that has a slider that can be changed from controller and that
+ * can controll the controller
+ */
+
 public class ModuleSlider extends Module {
 
     protected int sliderValue;
     protected SeekBar slider;
 
+    /**
+     * Dynamischer Konstruktor, der nach der Dokumentation im Wiki initialisiert
+     * https://github.com/redtech13/DIY-Project-Interface-APP/wiki/Modules
+     * @param _Param
+     * @param _Position
+     */
     public ModuleSlider(ArrayList<String> _Param, Point _Position) {
         super(_Param, _Position);
         if(_Param.size() >= 5)
@@ -47,6 +60,11 @@ public class ModuleSlider extends Module {
         }
     }
 
+    /**
+     * Gibt das Layout nach außen, da jede Modul ein anderes Layout nutzt
+     * @param context
+     * @return
+     */
     public int getLayout(Context context) {
         return context.getResources().getIdentifier("module_slider", "layout", context.getPackageName());
     }
@@ -69,6 +87,10 @@ public class ModuleSlider extends Module {
         }
     }
 
+    /**
+     * Setzt die Changelistener, sodass wenn im GUI etwas geändert wird, das Backend
+     * entsprechend darauf reagiert
+     */
     private void initSlider(){
         //auf der Seekbar will ich unseren Slider aufbauen morgen
         slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {

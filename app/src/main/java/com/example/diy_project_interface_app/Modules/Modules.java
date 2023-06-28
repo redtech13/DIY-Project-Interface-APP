@@ -9,6 +9,12 @@ import com.example.diy_project_interface_app.R;
 
 import java.util.ArrayList;
 
+/***
+ * Author: Jonas Sbiegay
+ * Studiengang: SMSB
+ * Modules is a helperclass that manages the creation process of Modules
+ */
+
 public abstract class Modules {
     Context ctx;
 
@@ -16,7 +22,14 @@ public abstract class Modules {
         this.ctx = _ctx;
     }
 
-
+    /**
+     * Nimmt die Argumente zum Erstellen des Moduls entgegen und gibt diese zurück.
+     * Nach Dokumentation:
+     * https://github.com/redtech13/DIY-Project-Interface-APP/wiki/Modules
+     * @param _Param
+     * @param _Position
+     * @return
+     */
     public static Module getModule(ArrayList<String> _Param, Point _Position) {
         if (!_Param.isEmpty()) {
             switch (_Param.get(0)) {

@@ -15,10 +15,23 @@ import com.example.diy_project_interface_app.R;
 
 import java.util.ArrayList;
 
+/***
+ * Author: Jonas Sbiegay
+ * Studiengang: SMSB
+ * ModuleToggleButton is a Module with a toggleable button that can be changed over
+ * bluetooth and can change the state of the bluetooth device
+ */
+
 public class ModuleToggleButton extends Module {
     protected Boolean active;
     protected ToggleButton vToggleButton;
 
+    /**
+     * Dynamischer Konstruktor, der nach der Dokumentation im Wiki initialisiert
+     * https://github.com/redtech13/DIY-Project-Interface-APP/wiki/Modules
+     * @param _Param
+     * @param _Position
+     */
     public ModuleToggleButton(ArrayList<String> _Param, Point _Position) {
         super(_Param, _Position);
         if(_Param.size() >= 5)
@@ -54,6 +67,10 @@ public class ModuleToggleButton extends Module {
         initToggleButton();
     }
 
+    /**
+     * Setzt die Changelistener, sodass wenn im GUI etwas geändert wird, das Backend
+     * entsprechend darauf reagiert
+     */
     private void initToggleButton() {
         vToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -83,6 +100,11 @@ public class ModuleToggleButton extends Module {
         });
     }
 
+    /**
+     * Gibt das Layout nach außen, da jede Modul ein anderes Layout nutzt
+     * @param context
+     * @return
+     */
     public int getLayout(Context context) {
         return context.getResources().getIdentifier("module_togglebutton", "layout", context.getPackageName());
     }
