@@ -48,6 +48,12 @@ public class ModuleNumber extends Module {
         return context.getResources().getIdentifier("module_number", "layout", context.getPackageName());
     }
 
+    /**
+     * Hier wird nach der Dokumentation im Wiki der String entgegengenommen, um das
+     * initialisierte Modul zu aktualisieren
+     * https://github.com/redtech13/DIY-Project-Interface-APP/wiki/Modules
+     * @param receivedStrings
+     */
     @Override
     public void updateInformation(ArrayList<String> receivedStrings) {
         if (!receivedStrings.isEmpty()) {
@@ -57,5 +63,17 @@ public class ModuleNumber extends Module {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Die toString ist für ein Übersichtliches Debugging gedacht, sodass man sich das gesamte
+     * Modul ausgeben lassen kann
+     * @return
+     */
+    @Override
+    public String toString() {
+        return super.toString() +
+                "Unit, Number => " + Unit.toString() + ", " + Number.toString()
+                ;
     }
 }

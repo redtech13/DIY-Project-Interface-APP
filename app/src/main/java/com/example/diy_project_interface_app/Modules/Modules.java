@@ -32,6 +32,8 @@ public abstract class Modules {
                 case "4":
                     return new ModuleTitle(_Param , _Position);
 
+                case "5":
+                    return new ModuleToggleButton(_Param , _Position);
             }
         }
         return null;
