@@ -41,15 +41,12 @@ public class ModuleSlider extends Module {
 
     @Override
     public void updateInformation(ArrayList<String> receivedStrings) {
-        for (String str : receivedStrings) {
-            if (!receivedStrings.isEmpty()) {
-                try {
-                    sliderValue = Integer.parseInt(receivedStrings.get(0));
-                    slider.setProgress(sliderValue, true);
-                } catch (NumberFormatException e) {
-                    System.out.println("Fehler beim Parsen des Strings zu int: " + e.getMessage());
-                }
-
+        if (!receivedStrings.isEmpty()) {
+            try {
+                sliderValue = Integer.parseInt(receivedStrings.get(0));
+                slider.setProgress(sliderValue, true);
+            } catch (NumberFormatException e) {
+                System.out.println("Fehler beim Parsen des Strings zu int: " + e.getMessage());
             }
         }
     }
