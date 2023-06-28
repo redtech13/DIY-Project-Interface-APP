@@ -3,6 +3,7 @@ package com.example.diy_project_interface_app.Modules;
 import android.content.Context;
 import android.content.res.XmlResourceParser;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.View;
 import android.widget.SeekBar;
 
