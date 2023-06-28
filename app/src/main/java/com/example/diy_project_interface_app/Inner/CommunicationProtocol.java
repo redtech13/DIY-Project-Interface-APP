@@ -1,6 +1,7 @@
 package com.example.diy_project_interface_app.Inner;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.example.diy_project_interface_app.Modules.Module;
 import com.example.diy_project_interface_app.R;
@@ -120,12 +121,27 @@ public class CommunicationProtocol{
     }
 
 
-    public String getHandshake(int _step){
-        switch (_step){
-            case 0:
-                return ctx.getString(R.string.PROT_cmd_versionRequest);
-            default:
-                return "";
-        }
+    public String getHandshake(){
+        return ctx.getString(R.string.PROT_cmd_versionRequest);
+    }
+
+    public int getHandshakeVersion(String _input) throws NumberFormatException{
+        return Integer.parseInt(_input.replace(ctx.getString(R.string.PROT_cmd_versionRequest),""));
+    }
+
+    public String getBuildInfoRequest(){
+        return ctx.getString(R.string.PROT_cmd_buildRequest);
+    }
+
+    public boolean checkBuildInfo(String _input){
+        return _input.startsWith(ctx.getString(R.string.PROT_cmd_buildStart)) && _input.endsWith(ctx.getString(R.string.PROT_cmd_buildEnd));
+    }
+
+    public String getInit(){
+        return ctx.getString(R.string.PROT_cmd_modeActive);
+    }
+
+    public boolean checkInit(String _input){
+        return _input.equals(ctx.getString(R.string.PROT_mod_confirm));
     }
 }

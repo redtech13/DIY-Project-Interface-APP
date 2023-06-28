@@ -14,10 +14,14 @@
     <string name="PROT_mod_prefix">´</string>
     <string name="PROT_mod_suffix">`</string>
     <string name="PROT_mod_parameter">;</string>
+    <string name="PROT_mod_confirm">OK</string>
 
     <!-- Errors -->
     <string name="ERR_buildInfo_incomplete">Incomplete Build Info</string>
     <string name="ERR_pref_wrongArgument">Wrong Argument(s) / Can\'t save</string>
+    <string name="ERR_comm_handshake">Failed to find library</string>
+    <string name="ERR_comm_buildinfo">Failed to retrieve buildinfo</string>
+    <string name="ERR_comm_init">Failed to init device</string>
 
     <!-- Preferences -->
     <string name="pref_title">Preferences</string>
