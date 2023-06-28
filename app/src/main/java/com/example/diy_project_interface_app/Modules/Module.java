@@ -49,6 +49,12 @@ public class Module {
         this.information = new ArrayList<String>();
     }
 
+    /**
+     * Hier wird nach der Dokumentation im Wiki der String entgegengenommen, um das
+     * initialisierte Modul zu aktualisieren
+     * https://github.com/redtech13/DIY-Project-Interface-APP/wiki/Modules
+     * @param receivedStrings
+     */
     public void updateInformation(ArrayList<String> receivedStrings) {
         for (String str : receivedStrings) {
             //Code dann hier
@@ -63,6 +69,11 @@ public class Module {
         return null;
     }
 
+    /**
+     * setzt die view sodass die Verbindung zwischen Instanz und GUI hergestellt werden kann
+     * sofern vorhanden werden auch Parameter aus der Initialisierung direkt gesetzt
+     * @param _view
+     */
     public void setView(View _view) {
         relatedView = _view;
     }
@@ -101,6 +112,11 @@ public class Module {
         return description;
     }
 
+    /**
+     * Die toString ist für ein Übersichtliches Debugging gedacht, sodass man sich das gesamte
+     * Modul ausgeben lassen kann
+     * @return
+     */
     @Override
     public String toString() {
         return "ModulTypID => " + String.valueOf(this.moduleTypeId) + "\n"+
@@ -108,7 +124,7 @@ public class Module {
                 "Width, Height => " + String.valueOf(this.width) + ", " + String.valueOf(this.height) +"\n"+
                 "posX, posY => " + String.valueOf(this.positionX) + ", " + String.valueOf(this.positionY) +"\n"+
                 "informationChanged => " + String.valueOf(this.informationChanged) +"\n"+
-                "information" + information.toString()
+                "information" + information.toString() + "\n"
                 ;
     }
 }

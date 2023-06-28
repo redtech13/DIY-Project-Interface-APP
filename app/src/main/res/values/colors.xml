@@ -9,4 +9,7 @@
     <color name="pref_row_border">#000000</color>
     <color name="pref_row_background">#FFFFFF</color>
     <color name="pref_row_border_error">#FF0000</color>
+
+    <color name="light_gray">#888888</color>
+    <color name="dark_green">#006400</color>
 </resources>

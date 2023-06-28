@@ -307,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
     private String buildRequest() {
         //Todo: request build info from device
         //return "_-_´5;`´0;4;1`___"; //Testing
-        return "_-_´5;`´3;3;1;Slider1;20`´1;1;2;Module;Text`´2;3;1;Speed;m/s`´4;4;1;Broadcast;ModuleTitle`___"; //Testing
+        return "_-_´5;`´5;3;1;Lampe1;0`´3;3;1;Slider1;20`´1;1;2;Module;Text`´2;2;1;Speed;Einheit;20`´4;4;1;Broadcast;ModuleTitle`___"; //Testing
         //return "_-_´5;`´0;4;1`´3;1;3`´0;3;2`´3;5;1`´0;1;2`´0;1;3`´0;1;3`´0;2;2`´0;1;3`´0;2;2`´0;3;1`´0;2;1`___"; //Testing
     }
 

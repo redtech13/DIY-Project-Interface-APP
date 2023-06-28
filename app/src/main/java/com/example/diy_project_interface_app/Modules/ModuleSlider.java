@@ -32,6 +32,11 @@ public class ModuleSlider extends Module {
         }
     }
 
+    /**
+     * setzt die view sodass die Verbindung zwischen Instanz und GUI hergestellt werden kann
+     * sofern vorhanden werden auch Parameter aus der Initialisierung direkt gesetzt
+     * @param _view
+     */
     @Override
     public void setView(View _view){
         relatedView = _view;
@@ -46,7 +51,12 @@ public class ModuleSlider extends Module {
         return context.getResources().getIdentifier("module_slider", "layout", context.getPackageName());
     }
 
-
+    /**
+     * Hier wird nach der Dokumentation im Wiki der String entgegengenommen, um das
+     * initialisierte Modul zu aktualisieren
+     * https://github.com/redtech13/DIY-Project-Interface-APP/wiki/Modules
+     * @param receivedStrings
+     */
     @Override
     public void updateInformation(ArrayList<String> receivedStrings) {
         if (!receivedStrings.isEmpty()) {
@@ -88,6 +98,16 @@ public class ModuleSlider extends Module {
         });
     }
 
-
+    /**
+     * Die toString ist für ein Übersichtliches Debugging gedacht, sodass man sich das gesamte
+     * Modul ausgeben lassen kann
+     * @return
+     */
+    @Override
+    public String toString() {
+        return super.toString() +
+                "Slider|" + name + "| => " + String.valueOf(sliderValue)
+                ;
+    }
 
 }
