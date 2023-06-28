@@ -25,7 +25,10 @@ public class ModuleSlider extends Module {
                 e.printStackTrace();
             }
         }
-        sliderValue = 50;
+        else
+        {
+            sliderValue = 50;
+        }
     }
 
     @Override
