@@ -1,10 +1,13 @@
 package com.example.diy_project_interface_app.Modules;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.example.diy_project_interface_app.R;
+
+import java.util.ArrayList;
 
 public class Modules {
     Context ctx;
@@ -13,31 +16,26 @@ public class Modules {
         this.ctx = _ctx;
     }
 
-    /**
-     * 1 => SliderModule
-     * 2 => TitleModule
-     * 3 => Number/Text Module
-     * @param type
-     * @param moduleTypeId
-     * @param name
-     * @param width
-     * @param height
-     * @return
-     */
-    public Module getModule(int type, int moduleTypeId, String name, int width, int height, View relativeView) {
-        switch (type) {
-            case 1: // Slider
-                return new ModuleSlider(moduleTypeId, name, width, height, relativeView);
 
-            case 2: // Title, big Text
-                return new Module(moduleTypeId, name, width, height, relativeView);
+    public Module getModule(ArrayList<String> _Param , Point _Position) {
+        if (!_Param.isEmpty()) {
+            switch (_Param.get(0)) {
+                case "1":
+                    //return new ModuleText(_Param , _Position);
 
-            case 3: // Number/Text Module, can be switched
-                return new Module(moduleTypeId, name, width, height, relativeView);
+                case "2":
+                    //return new ModuleNumber(_Param , _Position);
 
-            default:
-                return null;
-        }
+                case "3":
+                    return new ModuleSlider(_Param , _Position);
+
+                case "4":
+                    //return new ModuleTitle(_Param , _Position);
+
+                default:
+                    return null;
+            }
+        return null;
     }
 
     /**

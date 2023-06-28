@@ -1,7 +1,15 @@
 package com.example.diy_project_interface_app.Modules;
 
+import android.content.Context;
+import android.graphics.Point;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.SeekBar;
+
+import androidx.annotation.LayoutRes;
+
+import com.example.diy_project_interface_app.R;
 
 import java.util.ArrayList;
 
@@ -11,24 +19,41 @@ public class ModuleSlider extends Module {
     protected SeekBar slider;
 
 
-    public ModuleSlider(int moduleTypeId, String name, int width, int height, View relatedView, float sliderValue) {
-        super(moduleTypeId, name, width, height, relatedView);
-        this.sliderValue = sliderValue;
-        slider = (SeekBar) relatedView;
+    public ModuleSlider(ArrayList<String> _Param, Point _Position) {
+        super(_Param, _Position);
+        if(_Param.size() >= 3)
+        {
+            try {
+                this.sliderValue = Integer.parseInt(_Param.get(2));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void setView(View _view){
+        relatedView = _view;
+        slider = _view.findViewById(R.id.slider);
         initSlider();
     }
 
-    public ModuleSlider(int moduleTypeId, String name, int width, int height, View relatedView) {
-        super(moduleTypeId, name, width, height, relatedView);
-        this.sliderValue = 0;
-        slider = (SeekBar) relatedView;
-        initSlider();
+    @Override
+    public @LayoutRes int getLayout(){
+        return R.layout.module_slider;
     }
 
     @Override
     public void updateInformation(ArrayList<String> receivedStrings) {
         for (String str : receivedStrings) {
-            // was für Daten bekomme ich hier?
+            if (!receivedStrings.isEmpty()) {
+                try {
+                    sliderValue = Integer.parseInt(receivedStrings.get(0));
+                } catch (NumberFormatException e) {
+                    System.out.println("Fehler beim Parsen des Strings zu int: " + e.getMessage());
+                }
+
+            }
         }
     }
 
@@ -42,7 +67,11 @@ public class ModuleSlider extends Module {
                 // Hier wird der ausgewählte Wert aktualisiert
                 // progress enthält dann den aktuellen Wert des Sliders
                 informationChanged = true;
-                information = ""; //welches Format kommt hier rein
+                if (information.isEmpty()) {
+                    information.add(String.valueOf(progress));
+                } else {
+                    information.set(0, String.valueOf(progress));
+                }
             }
 
             // Wird aufgerufen, wenn Slider berührt wird
