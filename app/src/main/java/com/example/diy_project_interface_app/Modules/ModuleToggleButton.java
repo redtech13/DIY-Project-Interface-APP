@@ -34,6 +34,7 @@ public class ModuleToggleButton extends Module {
                 e.printStackTrace();
             }
         }
+        active = false;
     }
 
     /**
