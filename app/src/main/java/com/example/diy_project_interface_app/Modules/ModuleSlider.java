@@ -3,6 +3,7 @@ package com.example.diy_project_interface_app.Modules;
 import android.content.Context;
 import android.content.res.XmlResourceParser;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.View;
 import android.widget.SeekBar;
 
@@ -25,6 +26,10 @@ public class ModuleSlider extends Module {
                 e.printStackTrace();
             }
         }
+        else
+        {
+            sliderValue = 50;
+        }
     }
 
     @Override
@@ -32,6 +37,9 @@ public class ModuleSlider extends Module {
         relatedView = _view;
         slider = _view.findViewById(R.id.slider);
         initSlider();
+        if(sliderValue != 50){
+            slider.setProgress(sliderValue, true);
+        }
     }
 
     public int getLayout(Context context) {
@@ -41,15 +49,12 @@ public class ModuleSlider extends Module {
 
     @Override
     public void updateInformation(ArrayList<String> receivedStrings) {
-        for (String str : receivedStrings) {
-            if (!receivedStrings.isEmpty()) {
-                try {
-                    sliderValue = Integer.parseInt(receivedStrings.get(0));
-                    slider.setProgress(sliderValue, true);
-                } catch (NumberFormatException e) {
-                    System.out.println("Fehler beim Parsen des Strings zu int: " + e.getMessage());
-                }
-
+        if (!receivedStrings.isEmpty()) {
+            try {
+                sliderValue = Integer.parseInt(receivedStrings.get(0));
+                slider.setProgress(sliderValue, true);
+            } catch (NumberFormatException e) {
+                System.out.println("Fehler beim Parsen des Strings zu int: " + e.getMessage());
             }
         }
     }
