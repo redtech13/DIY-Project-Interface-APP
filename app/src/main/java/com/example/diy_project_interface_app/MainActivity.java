@@ -59,9 +59,6 @@ public class MainActivity extends AppCompatActivity {
                 case 2: //Device not found / not connected
                     //try connecting to old device
                     break;
-                case 2: //Device not found / not connected
-                    //try connecting to old device
-                    break;
             }
         }
     });
@@ -373,16 +370,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openDevices() {
-        Intent intent = new Intent(MainActivity.this, BluetoothDeviceActivity.class);
-        activityLauncher.launch(intent);
-    }
-
-    private void openPreferences(){
-        Intent intent = new Intent(MainActivity.this, PreferenceActivity.class);
-        activityLauncher.launch(intent);
-    }
-
-    private void openDevices(){
         Intent intent = new Intent(MainActivity.this, BluetoothDeviceActivity.class);
         activityLauncher.launch(intent);
     }
