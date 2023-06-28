@@ -10,6 +10,8 @@ import com.example.diy_project_interface_app.R;
 
 import java.util.ArrayList;
 
+//TODO: nicht fertig?
+/*
 public class ModuleSlider extends Module {
 
     protected float sliderValue;
@@ -85,4 +87,4 @@ public class ModuleSlider extends Module {
 
 
 
-}
+}*/
