@@ -52,7 +52,10 @@ public class BluetoothConnectionService {
     }
 
     public String getmInput() {
-        return mInput;
+        //reset Input after reading it
+        String tmp = mInput;
+        mInput = "";
+        return tmp;
     }
 
 
